@@ -1,0 +1,31 @@
+services:
+  webfrontend:
+     image: ${DOCKER_REGISTRY-}webfrontend
+     depends_on:
+        webapi:
+          condition: service_healthy
+     build:
+        context: .
+        dockerfile: WebFrontEnd/Dockerfile
+
+  webapi:
+     image: ${DOCKER_REGISTRY-}webapi
+     depends_on:
+        redis:
+          condition: service_started
+     healthcheck:
+        test: curl --fail http://webapi:8080/Counter || exit 1
+        interval: 20s
+        timeout: 20s
+        retries: 5
+     build:
+        context: .
+        dockerfile: WebAPI/Dockerfile
+
+  redis:
+     image: redis
+     command: ["redis-server", "--appendonly", "yes"]
+     volumes:
+        - redis_data:/data
+volumes:
+  redis_data:
