@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace WebApi.Features.Servers
 {
-    public static partial class AddServer
+    public partial class GetServersByName
     {
         public class Endpoint(IMediator mediator) : Endpoint<Request, Results<Ok<Response>, NotFound, BadRequest>>
         {
@@ -12,7 +12,7 @@ namespace WebApi.Features.Servers
 
             public override void Configure()
             {
-                Post("/");
+                Get("/name/{SearchTerm}");
                 AllowAnonymous();
                 Group<ServerGroup>();
             }

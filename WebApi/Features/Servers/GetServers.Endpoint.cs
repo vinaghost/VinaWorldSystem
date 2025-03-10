@@ -4,22 +4,22 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace WebApi.Features.Servers
 {
-    public static partial class AddServer
+    public partial class GetServers
     {
-        public class Endpoint(IMediator mediator) : Endpoint<Request, Results<Ok<Response>, NotFound, BadRequest>>
+        public class Endpoint(IMediator mediator) : EndpointWithoutRequest<Results<Ok<Response>, NotFound, BadRequest>>
         {
             private readonly IMediator _mediator = mediator;
 
             public override void Configure()
             {
-                Post("/");
+                Get("/");
                 AllowAnonymous();
                 Group<ServerGroup>();
             }
 
-            public override async Task<Results<Ok<Response>, NotFound, BadRequest>> ExecuteAsync(Request request, CancellationToken cancellationToken)
+            public override async Task<Results<Ok<Response>, NotFound, BadRequest>> ExecuteAsync(CancellationToken cancellationToken)
             {
-                var result = await _mediator.Send(request, cancellationToken);
+                var result = await _mediator.Send(new Request(), cancellationToken);
                 return TypedResults.Ok(result);
             }
         }
