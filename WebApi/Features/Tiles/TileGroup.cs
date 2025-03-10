@@ -1,12 +1,13 @@
 ﻿using FastEndpoints;
+using WebApi.Features.Servers;
 
 namespace WebApi.Features.Tiles
 {
-    public class TileGroup : Group
+    public class TileGroup : SubGroup<ServerGroup>
     {
         public TileGroup()
         {
-            Configure("tiles", ep =>
+            Configure("{ServerId}/tiles", ep =>
             {
                 ep.Description(x => x
                   .WithTags("tiles"));
