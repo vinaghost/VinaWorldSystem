@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using StackExchange.Redis;
+using WebApi.Context;
 
 namespace WebApi.Controllers
 {
@@ -10,11 +11,13 @@ namespace WebApi.Controllers
     {
         private readonly ILogger<CounterController> _logger;
         private readonly IDistributedCache _cache;
+        private readonly AppDbContext _context;
 
-        public CounterController(ILogger<CounterController> logger, IDistributedCache cache)
+        public CounterController(ILogger<CounterController> logger, IDistributedCache cache, AppDbContext context)
         {
             _logger = logger;
             _cache = cache;
+            _context = context;
         }
 
         [HttpGet(Name = "GetCounter")]

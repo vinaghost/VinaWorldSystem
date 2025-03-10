@@ -7,6 +7,8 @@ services:
      build:
         context: .
         dockerfile: WebFrontEnd/Dockerfile
+     profiles:
+        - donotstart
 
   webapi:
      image: ${DOCKER_REGISTRY-}webapi
@@ -21,11 +23,20 @@ services:
      build:
         context: .
         dockerfile: WebAPI/Dockerfile
+     environment:
+        CONNECTION_STRING: "Server=mysql;User=root;Password=${MYSQL_ROOT_PASSWORD};Database=TravianDb"
 
   redis:
      image: redis
      command: ["redis-server", "--appendonly", "yes"]
      volumes:
         - redis_data:/data
+  mysql:
+     image: mysql
+     environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+     volumes:
+        - mysql_data:/var/lib/mysql
 volumes:
   redis_data:
+  mysql_data:
