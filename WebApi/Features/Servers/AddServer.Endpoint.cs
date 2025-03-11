@@ -13,7 +13,7 @@ namespace WebApi.Features.Servers
             public override void Configure()
             {
                 Post("/");
-                AllowAnonymous();
+                Permissions("write:servers");
                 Group<ServerGroup>();
             }
 

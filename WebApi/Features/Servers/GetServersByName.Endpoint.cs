@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using WebApi.Features.Shared.Processors;
 
 namespace WebApi.Features.Servers
 {
@@ -13,7 +14,8 @@ namespace WebApi.Features.Servers
             public override void Configure()
             {
                 Get("/name/{SearchTerm}");
-                AllowAnonymous();
+                PreProcessor<RequestLogger<Request>>();
+                Permissions("read:servers");
                 Group<ServerGroup>();
             }
 
