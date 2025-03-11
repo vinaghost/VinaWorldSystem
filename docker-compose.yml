@@ -15,8 +15,11 @@ services:
      depends_on:
         redis:
           condition: service_started
+        seq:
+          condition: service_started
+          
      healthcheck:
-        test: curl --fail http://webapi:8080/Counter || exit 1
+        test: curl --fail http://webapi:8080/healthz || exit 1
         interval: 20s
         timeout: 20s
         retries: 5
@@ -25,13 +28,15 @@ services:
         dockerfile: WebAPI/Dockerfile
      environment:
         CONNECTION_STRING: "Server=mysql;User=root;Password=${MYSQL_ROOT_PASSWORD};Database=TravianDb"
-        AUTH0_AUTHORITY: ${AUTH0_AUTHORITY}
-        AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
         REDIS_URL: "redis:6379"
         REDIS_INSTANCE_NAME: "RedisTravian"
+        AUTH0_AUTHORITY: ${AUTH0_AUTHORITY}
+        AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
         AUTH0_DOMAIN: ${AUTH0_DOMAIN}
         AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
         AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET}
+        OTEL_EXPORTER_OTLP_ENDPOINT: http://seq:5341/ingest/otlp/v1/traces
+        OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
 
   redis:
      image: redis
@@ -44,6 +49,16 @@ services:
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
      volumes:
         - mysql_data:/var/lib/mysql
+  seq:
+     image: datalust/seq
+     ports: 
+        - "5001:80"
+     environment:
+        ACCEPT_EULA: "Y"
+        SEQ_API_CANONICALURI: "http://localhost:5001/"
+     volumes:
+        - seq_data:/data
 volumes:
   redis_data:
-  mysql_data:
+  mysql_data:  
+  seq_data:

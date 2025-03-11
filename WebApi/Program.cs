@@ -1,16 +1,18 @@
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Serilog;
 using System.Security.Claims;
 using WebApi.Context;
-using WebApi.Features.Authentication;
 using WebApi.Marker;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 // Add services to the container.
 var authority = Environment.GetEnvironmentVariable("AUTH0_AUTHORITY")!;
 builder.Services
@@ -21,26 +23,11 @@ builder.Services
         options.Audience = Environment.GetEnvironmentVariable("AUTH0_AUDIENCE");
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            NameClaimType = ClaimTypes.NameIdentifier
+            NameClaimType = ClaimTypes.NameIdentifier,
         };
     });
 
-var scopes = new[]
-{
-    "read:servers",
-    "read:tiles",
-    "write:servers",
-    "write:tiles",
-};
-builder.Services
-    .AddAuthorization(options =>
-    {
-        foreach (var scope in scopes)
-        {
-            options.AddPolicy(scope, policy => policy.Requirements.Add(new HasScopeRequirement(scope, authority)));
-        }
-    });
-builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+builder.Services.AddAuthorization();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<IWebApi>());
 
@@ -66,12 +53,30 @@ builder.Services.AddHttpClient("Auth0", client =>
 {
     client.BaseAddress = new Uri(authority);
 });
+
+builder.Services
+    .AddOpenTelemetry()
+    .ConfigureResource(resources => resources.AddService("WebApi"))
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddHttpClientInstrumentation()
+            .AddAspNetCoreInstrumentation();
+        tracing
+            .AddOtlpExporter();
+    });
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 app.UseAuthentication()
     .UseAuthorization();
 
 app.UseFastEndpoints()
    .UseSwaggerGen();
+
+app.MapHealthChecks("/healthz");
 
 app.Run();
