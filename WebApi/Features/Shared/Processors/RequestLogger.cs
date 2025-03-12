@@ -1,5 +1,4 @@
 ﻿using FastEndpoints;
-using Microsoft.AspNetCore.Authentication;
 
 namespace WebApi.Features.Shared.Processors
 {
@@ -10,13 +9,7 @@ namespace WebApi.Features.Shared.Processors
             var logger = ctx.HttpContext.Resolve<ILogger<TRequest>>();
 
             logger.LogInformation("request:{FullName} path: {Path}", ctx.Request!.GetType().FullName, ctx.HttpContext.Request.Path);
-            var accessToken = await ctx.HttpContext.GetTokenAsync("access_token");
-
-            var claims = ctx.HttpContext.User.Claims.ToArray();
-
-            _ = 2;
-
-
+            await Task.CompletedTask;
         }
     }
 }

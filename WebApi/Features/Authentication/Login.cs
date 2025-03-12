@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace WebApi.Features.Authentication
@@ -19,10 +20,11 @@ namespace WebApi.Features.Authentication
             public required int ExpiresIn { get; set; }
         }
 
-        public class Endpoint(IHttpClientFactory httpClientFactory, IConfiguration configuration) : Endpoint<LoginRequest, Results<Ok<TokenContent>, NotFound, BadRequest>>
+        public class Endpoint(IHttpClientFactory httpClientFactory, IConfiguration configuration, ActivitySource activitySource) : Endpoint<LoginRequest, Results<Ok<TokenContent>, NotFound, BadRequest>>
         {
             private readonly HttpClient _httpClient = httpClientFactory.CreateClient("Auth0");
             private readonly IConfiguration _configuration = configuration;
+            private readonly ActivitySource _activitySource = activitySource;
 
             public override void Configure()
             {
@@ -43,6 +45,8 @@ namespace WebApi.Features.Authentication
                     { "client_secret", clientSecret },
                     { "audience", audience }
                 };
+
+                using var activity = _activitySource.StartActivity("Auth0 login");
 
                 var content = new FormUrlEncodedContent(parameters);
 

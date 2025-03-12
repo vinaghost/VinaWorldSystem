@@ -8,6 +8,7 @@ using OpenTelemetry.Trace;
 using Serilog;
 using System.Security.Claims;
 using WebApi.Context;
+using WebApi.Features.Shared.Behaviors;
 using WebApi.Marker;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +30,11 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<IWebApi>());
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining<IWebApi>();
+    cfg.AddOpenBehavior(typeof(QueryCachingPipelineBehavior<,>));
+});
 
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 builder.Services.AddDbContext<AppDbContext>(options =>
