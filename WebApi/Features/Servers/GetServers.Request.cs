@@ -1,9 +1,12 @@
-﻿using MediatR;
+﻿using WebApi.Features.Shared.Cache;
 
 namespace WebApi.Features.Servers
 {
     public partial class GetServers
     {
-        public record Request() : IRequest<Response>;
+        public record Request() : ICachedQuery<Response>
+        {
+            public string Key => $"{nameof(GetServers)}";
+        }
     }
 }

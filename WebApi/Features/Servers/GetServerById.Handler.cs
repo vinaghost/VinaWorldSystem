@@ -1,14 +1,14 @@
 ﻿using FluentResults;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Context;
+using WebApi.Features.Shared.Cache;
 using WebApi.Features.Shared.Errors;
 
 namespace WebApi.Features.Servers
 {
     public partial class GetServerById
     {
-        public class Handler(AppDbContext dbContext) : IRequestHandler<Request, Result<string>>
+        public class Handler(AppDbContext dbContext) : ICacheQueryHandler<Request, string>
         {
             private readonly AppDbContext _dbContext = dbContext;
 

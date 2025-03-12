@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using FluentResults;
+using MediatR;
 
 namespace WebApi.Features.Shared.Cache
 {
-    public interface ICachedQuery<TResponse> : IRequest<TResponse>, ICachedQuery;
+    public interface ICachedQuery<TResponse> : IRequest<Result<TResponse>>, ICachedQuery;
 
     public interface ICachedQuery
     {
