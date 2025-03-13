@@ -14,13 +14,21 @@ namespace WebApi.Features.Tiles
             public override void Configure()
             {
                 Get("/");
-                AllowAnonymous();
+                Permissions("write:tiles");
+                AllowFileUploads(dontAutoBindFormData: true);
                 Group<TileGroup>();
             }
 
             public override async Task<Results<Ok<Response>, NotFound, BadRequest>> ExecuteAsync(Request request, CancellationToken cancellationToken)
             {
-                var result = await _mediator.Send(request, cancellationToken);
+                if (Files.Count <= 0)
+                {
+                    return TypedResults.BadRequest();
+                }
+
+                var file = Files[0];
+                var reader = new StreamReader(file.OpenReadStream());
+                var result = await _mediator.Send(new Command(request.ServerId, reader), cancellationToken);
                 if (result.IsFailed)
                 {
                     if (result.HasError<ItemNotFound>())

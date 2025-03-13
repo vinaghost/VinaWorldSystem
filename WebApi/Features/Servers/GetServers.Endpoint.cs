@@ -13,14 +13,14 @@ namespace WebApi.Features.Servers
             public override void Configure()
             {
                 Get("/");
-                AllowAnonymous();
+                Permissions("read:servers");
                 Group<ServerGroup>();
             }
 
             public override async Task<Results<Ok<Response>, NotFound, BadRequest>> ExecuteAsync(CancellationToken cancellationToken)
             {
                 var result = await _mediator.Send(new Request(), cancellationToken);
-                return TypedResults.Ok(result);
+                return TypedResults.Ok(result.Value);
             }
         }
     }

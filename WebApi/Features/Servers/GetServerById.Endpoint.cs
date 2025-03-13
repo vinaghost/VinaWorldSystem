@@ -14,7 +14,7 @@ namespace WebApi.Features.Servers
             public override void Configure()
             {
                 Get("{Id}");
-                AllowAnonymous();
+                Permissions("read:servers");
                 Group<ServerGroup>();
             }
 

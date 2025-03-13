@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
+    <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="FastEndpoints" Version="5.35.0" />
     <PackageReference Include="FastEndpoints.Security" Version="5.35.0" />
     <PackageReference Include="FastEndpoints.Swagger" Version="5.35.0" />

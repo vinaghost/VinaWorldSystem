@@ -22,7 +22,7 @@ namespace WebApi.Features.Servers
             public override async Task<Results<Ok<Response>, NotFound, BadRequest>> ExecuteAsync(Request request, CancellationToken cancellationToken)
             {
                 var result = await _mediator.Send(request, cancellationToken);
-                return TypedResults.Ok(result);
+                return TypedResults.Ok(result.Value);
             }
         }
     }
