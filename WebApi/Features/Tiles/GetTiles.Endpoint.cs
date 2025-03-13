@@ -5,7 +5,7 @@ using WebApi.Features.Shared.Errors;
 
 namespace WebApi.Features.Tiles
 {
-    public partial class AddTiles
+    public partial class GetTiles
     {
         public class Endpoint(IMediator mediator) : Endpoint<Request, Results<Ok<Response>, NotFound, BadRequest>>
         {
@@ -13,22 +13,14 @@ namespace WebApi.Features.Tiles
 
             public override void Configure()
             {
-                Post("/");
-                Permissions("write:tiles");
-                AllowFileUploads(dontAutoBindFormData: true);
+                Get("/");
+                Permissions("read:tiles");
                 Group<TileGroup>();
             }
 
             public override async Task<Results<Ok<Response>, NotFound, BadRequest>> ExecuteAsync(Request request, CancellationToken cancellationToken)
             {
-                if (Files.Count <= 0)
-                {
-                    return TypedResults.BadRequest();
-                }
-
-                var file = Files[0];
-                var reader = new StreamReader(file.OpenReadStream());
-                var result = await _mediator.Send(new Command(request.ServerId, reader), cancellationToken);
+                var result = await _mediator.Send(request, cancellationToken);
                 if (result.IsFailed)
                 {
                     if (result.HasError<ItemNotFound>())
@@ -37,7 +29,6 @@ namespace WebApi.Features.Tiles
                     }
                     return TypedResults.BadRequest();
                 }
-
                 return TypedResults.Ok(result.Value);
             }
         }
