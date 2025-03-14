@@ -7,6 +7,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
 using System.Security.Claims;
+using WebApi;
 using WebApi.Context;
 using WebApi.Features.Shared.Behaviors;
 using WebApi.Marker;
@@ -72,6 +73,7 @@ builder.Services
     });
 builder.Services.AddHealthChecks();
 
+builder.Services.AddHostedService<StartUp>();
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();

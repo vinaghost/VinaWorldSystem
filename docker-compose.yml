@@ -27,7 +27,7 @@ services:
         context: .
         dockerfile: WebAPI/Dockerfile
      environment:
-        CONNECTION_STRING: "Server=mysql;User=root;Password=${MYSQL_ROOT_PASSWORD};Database=TravianDb"
+        CONNECTION_STRING: "Server=mysql;User=root;Password=${MYSQL_ROOT_PASSWORD};Database=TravianDb;AllowLoadLocalInfile=true"
         REDIS_URL: "redis:6379"
         REDIS_INSTANCE_NAME: "RedisTravian"
         AUTH0_AUTHORITY: ${AUTH0_AUTHORITY}

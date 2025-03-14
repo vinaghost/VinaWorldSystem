@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System.Diagnostics;
 using WebApi.Context;
 using WebApi.Entities;
 
@@ -6,13 +7,13 @@ namespace WebApi.Features.Servers
 {
     public static partial class AddServer
     {
-        public class Handler(AppDbContext dbContext) : IRequestHandler<Request, Response>
+        public class Handler(AppDbContext dbContext, ActivitySource activitySource) : IRequestHandler<Request, Response>
         {
             private readonly AppDbContext _dbContext = dbContext;
+            private readonly ActivitySource _activitySource = activitySource;
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                await _dbContext.Database.EnsureCreatedAsync(cancellationToken);
                 var server = new Server
                 {
                     Url = request.Url,
@@ -21,8 +22,12 @@ namespace WebApi.Features.Servers
                     VillageUpdateAt = DateTime.UtcNow
                 };
 
-                _dbContext.Servers.Add(server);
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                using (var activity = _activitySource.StartActivity("Insert new server"))
+                {
+                    _dbContext.Servers.Add(server);
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                }
+
                 return new(server.Id);
             }
         }

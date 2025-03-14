@@ -1,8 +1,10 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration.Attributes;
+using EFCore.BulkExtensions;
 using FluentResults;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Globalization;
 using WebApi.Context;
 using WebApi.Entities;
@@ -12,7 +14,7 @@ namespace WebApi.Features.Tiles
 {
     public partial class AddTiles
     {
-        public class Handler(AppDbContext context) : IRequestHandler<Command, Result<Response>>
+        public class Handler(AppDbContext context, ILogger<Handler> logger, ActivitySource activitySource) : IRequestHandler<Command, Result<Response>>
         {
             public class RawTile
             {
@@ -39,6 +41,8 @@ namespace WebApi.Features.Tiles
             }
 
             private readonly AppDbContext _context = context;
+            private readonly ILogger<Handler> _logger = logger;
+            private readonly ActivitySource _activitySource = activitySource;
 
             public async Task<Result<Response>> Handle(Command request, CancellationToken cancellationToken)
             {
@@ -52,18 +56,38 @@ namespace WebApi.Features.Tiles
 
                 using var csv = new CsvReader(request.Reader, CultureInfo.InvariantCulture);
                 var records = csv.GetRecords<RawTile>();
-                var tiles = records.Select(t => new Tile
+                var tiles = records
+                    .Select(t => new Tile
+                    {
+                        ServerId = request.ServerId,
+                        MapId = t.MapId,
+                        X = t.X,
+                        Y = t.Y,
+                        Type = t.TileType,
+                        Status = t.TileType2
+                    })
+                    .ToList();
+
+                _logger.LogInformation("Found {Count} tiles in the file", tiles.Count);
+
+                if (tiles.Count <= 0)
                 {
-                    ServerId = request.ServerId,
-                    MapId = t.MapId,
-                    X = t.X,
-                    Y = t.Y,
-                    Type = t.TileType,
-                    Status = t.TileType2
-                });
-                _context.Tiles.AddRange(tiles);
-                var count = await _context.SaveChangesAsync(cancellationToken);
-                return new Response(count);
+                    return new Response(0);
+                }
+
+                using (var activity = _activitySource.StartActivity("Delete old tiles"))
+                {
+                    await _context.Tiles
+                        .Where(t => t.ServerId == request.ServerId)
+                        .ExecuteDeleteAsync(cancellationToken);
+                }
+
+                using (var activity = _activitySource.StartActivity("Insert new tiles"))
+                {
+                    await _context.BulkInsertAsync(tiles, cancellationToken: cancellationToken);
+                }
+
+                return new Response(tiles.Count);
             }
         }
     }
