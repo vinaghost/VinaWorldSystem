@@ -79,7 +79,7 @@ namespace WebApi.Features.Tiles
                 {
                     await _context.Tiles
                         .Where(t => t.ServerId == request.ServerId)
-                        .ExecuteDeleteAsync(cancellationToken);
+                        .ExecuteDeleteAsync(cancellationToken: cancellationToken);
                 }
 
                 using (var activity = _activitySource.StartActivity("Insert new tiles"))

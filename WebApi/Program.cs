@@ -2,6 +2,7 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -39,11 +40,18 @@ builder.Services.AddMediatR(cfg =>
 
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 builder.Services.AddDbContext<AppDbContext>(options =>
+{
     options.UseMySql(
-        connectionString,
-        ServerVersion.AutoDetect(connectionString)
-    )
-);
+          connectionString,
+          ServerVersion.AutoDetect(connectionString)
+      );
+
+    options.LogTo((e, l) => e == RelationalEventId.CommandExecuted, a =>
+    {
+        CommandEventData cmdData = (CommandEventData)a;
+        Log.Logger.Information("Command Executed : {Command}", cmdData.Command.CommandText);
+    });
+});
 
 builder.Services
     .AddFastEndpoints()
