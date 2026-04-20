@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path="LICENSE.txt" />
+    <File Path=".gitignore" />
+  </Folder>
+</Solution>
