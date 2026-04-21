@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "nuget-skills": {
+      "version": "0.4.0",
+      "commands": [
+        "nuget-skills"
+      ],
+      "rollForward": false
+    }
+  }
+}
