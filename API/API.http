@@ -5,4 +5,10 @@ Accept: application/json
 ###
 GET {{API_HostAddress}}/servers/
 Accept: application/json
+###
+GET {{API_HostAddress}}/health/live
+Accept: application/json
+###
+GET {{API_HostAddress}}/health/ready
+Accept: application/json
 
