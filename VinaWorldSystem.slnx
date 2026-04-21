@@ -7,4 +7,5 @@
     <File Path=".gitignore" />
     <File Path="README.md" />
   </Folder>
+  <Project Path="API/API.csproj" Id="51d7c6c7-168d-4237-8885-40246e5d226a" />
 </Solution>
