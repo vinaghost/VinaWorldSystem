@@ -8,6 +8,13 @@
         "nuget-skills"
       ],
       "rollForward": false
+    },
+    "microsoft.dotnet-interactive": {
+      "version": "1.0.707101",
+      "commands": [
+        "dotnet-interactive"
+      ],
+      "rollForward": false
     }
   }
 }

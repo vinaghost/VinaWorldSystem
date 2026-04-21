@@ -1,6 +1,6 @@
-namespace API
+namespace API.Endpoints.WeatherForecast
 {
-    public class WeatherForecast
+    public class Response
     {
         public DateOnly Date { get; set; }
 
