@@ -7,51 +7,11 @@ allowed-tools: Bash
 
 # Git Commit with Conventional Commits
 
-## Overview
+Refer to .github/instructions/commit.instructions.md for the Conventional Commits format:
 
-Create standardized, semantic git commits using the Conventional Commits specification. Analyze the actual diff to determine appropriate type, scope, and message.
+# Workflow
 
-## Conventional Commit Format
-
-```
-<type>[optional scope]: <description>
-
-[optional body]
-
-[optional footer(s)]
-```
-
-## Commit Types
-
-| Type       | Purpose                        |
-| ---------- | ------------------------------ |
-| `feat`     | New feature                    |
-| `fix`      | Bug fix                        |
-| `docs`     | Documentation only             |
-| `style`    | Formatting/style (no logic)    |
-| `refactor` | Code refactor (no feature/fix) |
-| `perf`     | Performance improvement        |
-| `test`     | Add/update tests               |
-| `build`    | Build system/dependencies      |
-| `ci`       | CI/config changes              |
-| `chore`    | Maintenance/misc               |
-| `revert`   | Revert commit                  |
-
-## Breaking Changes
-
-```
-# Exclamation mark after type/scope
-feat!: remove deprecated endpoint
-
-# BREAKING CHANGE footer
-feat: allow config to extend other configs
-
-BREAKING CHANGE: `extends` key behavior changed
-```
-
-## Workflow
-
-### 1. Analyze Diff
+## 1. Analyze Diff
 
 ```bash
 # If files are staged, use staged diff
@@ -64,7 +24,7 @@ git diff
 git status --porcelain
 ```
 
-### 2. Stage Files (if needed)
+## 2. Stage Files (if needed)
 
 If nothing is staged or you want to group changes differently:
 
@@ -82,7 +42,7 @@ git add -p
 
 **Never commit secrets** (.env, credentials.json, private keys).
 
-### 3. Generate Commit Message
+## 3. Generate Commit Message
 
 Analyze the diff to determine:
 
@@ -90,7 +50,7 @@ Analyze the diff to determine:
 - **Scope**: What area/module is affected?
 - **Description**: One-line summary of what changed (present tense, imperative mood, <72 chars)
 
-### 4. Execute Commit
+## 4. Execute Commit
 
 ```bash
 # Single line
@@ -107,7 +67,7 @@ EOF
 )"
 ```
 
-## Best Practices
+# Best Practices
 
 - One logical change per commit
 - Present tense: "add" not "added"
@@ -115,7 +75,7 @@ EOF
 - Reference issues: `Closes #123`, `Refs #456`
 - Keep description under 72 characters
 
-## Git Safety Protocol
+# Git Safety Protocol
 
 - NEVER update git config
 - NEVER run destructive commands (--force, hard reset) without explicit request
