@@ -1,4 +1,4 @@
-﻿using API.Services;
+﻿using API.Infrastructure.Services;
 using FastEndpoints;
 
 namespace API.Features.Servers
