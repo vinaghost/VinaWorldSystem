@@ -427,3 +427,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Development appsettings files, which may contain secrets and should not be checked in
+*/appsettings.Development.json
