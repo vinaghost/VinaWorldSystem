@@ -13,13 +13,5 @@ namespace API.Infrastructure.Services
             connection.ChangeDatabase(databaseName);
             return connection;
         }
-
-        public async Task<List<Response>> GetServers()
-        {
-            await using var connection = await OpenConnection("Servers");
-
-            var response = await connection.QueryAsync<Response>("SELECT LastUpdate, VillageCount, PlayerCount, AllianceCount FROM Servers");
-            return [.. response];
-        }
     }
 }

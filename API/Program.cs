@@ -1,3 +1,4 @@
+using API;
 using API.Infrastructure.Services;
 using FastEndpoints;
 using MySqlConnector;
@@ -8,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddFastEndpoints();
-
+builder.Services.AddAPIBehaviors();
+builder.Services.AddAPIHandlers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
