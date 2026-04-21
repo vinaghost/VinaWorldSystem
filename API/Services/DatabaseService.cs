@@ -1,4 +1,4 @@
-using API.Endpoints.Servers;
+using API.Features.Servers;
 using Dapper;
 using MySqlConnector;
 using System.Data;

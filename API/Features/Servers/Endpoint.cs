@@ -1,7 +1,7 @@
 ﻿using API.Services;
 using FastEndpoints;
 
-namespace API.Endpoints.Servers
+namespace API.Features.Servers
 {
     public class Endpoint(DatabaseService databaseService) : EndpointWithoutRequest<List<Response>>
     {

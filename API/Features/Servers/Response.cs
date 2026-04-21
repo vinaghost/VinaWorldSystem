@@ -1,4 +1,4 @@
-﻿namespace API.Endpoints.Servers
+﻿namespace API.Features.Servers
 {
     public class Response
     {

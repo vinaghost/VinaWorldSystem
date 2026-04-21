@@ -1,6 +1,6 @@
 ﻿using FastEndpoints;
 
-namespace API.Endpoints.WeatherForecast
+namespace API.Features.WeatherForecast
 {
     public class Endpoint : EndpointWithoutRequest<List<Response>>
     {

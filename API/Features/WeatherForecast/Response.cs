@@ -1,4 +1,4 @@
-namespace API.Endpoints.WeatherForecast
+namespace API.Features.WeatherForecast
 {
     public class Response
     {
