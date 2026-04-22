@@ -1,7 +1,6 @@
-﻿using API.Infrastructure.Services;
-using FastEndpoints;
+﻿using FastEndpoints;
 
-namespace API.Features.Servers
+namespace API.Features.GetServers
 {
     public class GetServersEndpoint(GetServersQuery.Handler handler) : EndpointWithoutRequest<List<GetServersResponse>>
     {

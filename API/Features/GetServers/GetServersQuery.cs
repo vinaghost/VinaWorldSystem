@@ -2,7 +2,7 @@
 using Dapper;
 using Immediate.Handlers.Shared;
 
-namespace API.Features.Servers
+namespace API.Features.GetServers
 {
     [Handler]
     public static partial class GetServersQuery

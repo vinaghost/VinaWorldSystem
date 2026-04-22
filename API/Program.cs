@@ -5,7 +5,6 @@ using FastEndpoints;
 using MySqlConnector;
 using Serilog;
 using Serilog.Events;
-using System.Data;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)

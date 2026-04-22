@@ -1,5 +1,4 @@
-﻿using FastEndpoints;
-using Serilog.Context;
+﻿using Serilog.Context;
 
 namespace API.Infrastructure.Middleware
 {

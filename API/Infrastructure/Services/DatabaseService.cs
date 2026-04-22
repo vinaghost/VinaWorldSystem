@@ -1,7 +1,4 @@
-using API.Features.Servers;
-using Dapper;
 using MySqlConnector;
-using System.Data;
 
 namespace API.Infrastructure.Services
 {
