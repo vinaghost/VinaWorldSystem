@@ -6,6 +6,9 @@ Accept: application/json
 GET {{API_HostAddress}}/servers/
 Accept: application/json
 ###
+GET {{API_HostAddress}}/servers/france.x2.france.travian.com/players/10
+Accept: application/json
+###
 GET {{API_HostAddress}}/health/live
 Accept: application/json
 ###
