@@ -1,5 +1,4 @@
 ﻿using API.Domains.EndpointGroups;
-using API.Features.GetServers;
 using API.Features.Shared;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -19,7 +18,7 @@ namespace API.Features.GetPlayer
 
         public override async Task<Results<Ok<GetPlayerResponse>, NotFound>> ExecuteAsync(GetPlayerRequest request, CancellationToken cancellationToken)
         {
-            var response = await handler.HandleAsync(new GetPlayerQuery.Query(request.ServerName, request.PlayerId), cancellationToken);
+            var response = await handler.HandleAsync(new(request.ServerName, request.PlayerId), cancellationToken);
             if (response is null)
             {
                 return TypedResults.NotFound();

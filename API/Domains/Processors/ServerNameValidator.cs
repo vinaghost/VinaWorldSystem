@@ -31,7 +31,7 @@ namespace API.Domains.Processors
                 ctx.ValidationFailures.Add(
                     new("ServerName", $"Server name is incorrect!"));
 
-                await ctx.HttpContext.Response.SendErrorsAsync(ctx.ValidationFailures, cancellation: cancellationToken);
+                await ctx.HttpContext.Response.SendErrorsAsync(ctx.ValidationFailures, 404, cancellation: cancellationToken);
                 return;
             }
         }

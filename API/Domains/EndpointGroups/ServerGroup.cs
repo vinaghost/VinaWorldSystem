@@ -1,5 +1,4 @@
 ﻿using API.Domains.Processors;
-using API.Features.Shared;
 using FastEndpoints;
 
 namespace API.Domains.EndpointGroups
