@@ -1,12 +1,9 @@
 using API.Domains.EndpointGroups;
-using API.Features.Shared;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Features.GetNewVillages
 {
-    public record GetNewVillagesRequest(string ServerName, DateTime Date) : ServerNameRequest(ServerName);
-
     public class GetNewVillagesEndpoint(GetNewVillagesQuery.Handler handler) : Endpoint<GetNewVillagesRequest, Results<Ok<List<GetNewVillagesResponse>>, NotFound>>
     {
         public override void Configure()

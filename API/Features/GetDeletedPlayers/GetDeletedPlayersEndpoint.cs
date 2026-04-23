@@ -1,12 +1,9 @@
 using API.Domains.EndpointGroups;
-using API.Features.Shared;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Features.GetDeletedPlayers
 {
-    public record GetDeletedPlayersRequest(string ServerName, DateTime Date) : ServerNameRequest(ServerName);
-
     public class GetDeletedPlayersEndpoint(GetDeletedPlayersQuery.Handler handler) : Endpoint<GetDeletedPlayersRequest, Results<Ok<List<GetDeletedPlayersResponse>>, NotFound>>
     {
         public override void Configure()
