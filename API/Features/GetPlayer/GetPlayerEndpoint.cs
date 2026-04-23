@@ -11,7 +11,7 @@ namespace API.Features.GetPlayer
     {
         public override void Configure()
         {
-            Get("/players/{PlayerId}");
+            Get("/players/basic/{PlayerId}");
             AllowAnonymous();
             Group<ServerGroup>();
         }

@@ -1,15 +1,19 @@
 @API_HostAddress = http://localhost:5297
 @ServerName = france.x2.france.travian.com
+
 GET {{API_HostAddress}}/weatherforecast/
 Accept: application/json
 ###
 GET {{API_HostAddress}}/servers/
 Accept: application/json
 ###
-GET {{API_HostAddress}}/servers/{{ServerName}}/players/10
+GET {{API_HostAddress}}/servers/{{ServerName}}/players/basic/10
 Accept: application/json
 ###
 GET {{API_HostAddress}}/servers/{{ServerName}}/villages/new/2026-04-21
+Accept: application/json
+###
+GET {{API_HostAddress}}/servers/{{ServerName}}/players/deleted/2026-04-23
 Accept: application/json
 ###
 GET {{API_HostAddress}}/health/live
