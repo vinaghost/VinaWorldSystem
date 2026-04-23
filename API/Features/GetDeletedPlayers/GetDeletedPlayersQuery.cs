@@ -29,22 +29,26 @@ WITH delete_players AS (
         h.PlayerId,
         ROW_NUMBER() OVER (PARTITION BY PlayerId ORDER BY h.Id DESC) AS row_index,
         h.Date
-    FROM Players p
-    JOIN PlayersHistory h ON p.id = h.PlayerId
-    WHERE p.VillageCount = 0
-      AND h.Population = 0
+    FROM
+        Players p
+        JOIN PlayersHistory h ON p.id = h.PlayerId
+    WHERE
+        p.VillageCount = 0
+        AND h.Population = 0
 )
 SELECT
-    p.Id AS PlayerId,
-    p.Name AS PlayerName,
-    a.id AS AllianceId,
-    a.Name AS AllainceName,
-    dp.Date AS DeletedDate
-FROM delete_players dp
-JOIN Players p ON dp.PlayerId = p.Id
-JOIN Alliances a ON p.AllianceId = a.Id
-WHERE dp.row_index = 1
-  AND dp.Date = Date(@Date);
+    p.Id        AS PlayerId,
+    p.Name      AS PlayerName,
+    a.id        AS AllianceId,
+    a.Name      AS AllainceName,
+    dp.Date     AS DeletedDate
+FROM
+    delete_players dp
+    JOIN Players p   ON dp.PlayerId = p.Id
+    JOIN Alliances a ON p.AllianceId = a.Id
+WHERE
+    dp.row_index = 1
+    AND dp.Date = Date(@Date);
 """, new { Date = query.Date.ToString("yyyy-MM-dd") });
             return response;
         }

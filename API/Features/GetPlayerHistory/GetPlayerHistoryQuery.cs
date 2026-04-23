@@ -40,23 +40,28 @@ namespace API.Features.GetPlayerHistory
             await using var connection = await databaseService.OpenConnection(query.ServerName);
             var statement = """
 SELECT
-    Id AS PlayerId,
+    Id   AS PlayerId,
     Name AS PlayerName
-FROM Players
-WHERE Id = @PlayerId;
+FROM
+    Players
+WHERE
+    Id = @PlayerId;
 
 SELECT
-    h.Date AS UpdateDate,
+    h.Date            AS UpdateDate,
     h.AllianceId,
-    a.Name AS AllianceName,
+    a.Name            AS AllianceName,
     h.ChangeAlliance,
     h.Population,
     h.ChangePopulation
-FROM  PlayersHistory h
-JOIN Alliances a ON h.AllianceId = a.Id
-WHERE h.PlayerId = @PlayerId
-AND h.Date > DATE_ADD(CURDATE(), INTERVAL -7 DAY)
-ORDER BY h.Date DESC;
+FROM
+    PlayersHistory h
+    JOIN Alliances a ON h.AllianceId = a.Id
+WHERE
+    h.PlayerId = @PlayerId
+    AND h.Date > DATE_ADD(CURDATE(), INTERVAL -7 DAY)
+ORDER BY
+    h.Date DESC;
 """;
             using var multi = await connection.QueryMultipleAsync(statement, new { query.PlayerId });
             var player = multi.ReadFirst<Player>();

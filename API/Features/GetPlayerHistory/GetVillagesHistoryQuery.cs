@@ -36,22 +36,26 @@ namespace API.Features.GetPlayerHistory
             await using var connection = await databaseService.OpenConnection(query.ServerName);
             var statement = """
 SELECT
-    v.Id AS VillageId,
-    v.Name AS VillageName,
+    v.Id           AS VillageId,
+    v.Name         AS VillageName,
     v.X,
     v.Y,
     v.IsCapital,
-    h.Date AS UpdateDate,
+    h.Date         AS UpdateDate,
     h.PlayerId,
-    p.Name AS PlayerName,
+    p.Name         AS PlayerName,
     h.ChangePlayer,
     h.Population,
     h.ChangePopulation
-FROM Villages v
-JOIN VillagesHistory h on v.Id = h.VillageId
-JOIN Players p on h.PlayerId = p.Id
-WHERE h.PlayerId = @PlayerId AND h.Date > DATE_ADD(CURDATE(), INTERVAL -7 DAY)
-ORDER BY h.Id DESC;
+FROM
+    Villages v
+    JOIN VillagesHistory h ON v.Id = h.VillageId
+    JOIN Players p        ON h.PlayerId = p.Id
+WHERE
+    h.PlayerId = @PlayerId
+    AND h.Date > DATE_ADD(CURDATE(), INTERVAL -7 DAY)
+ORDER BY
+    h.Id DESC;
 """;
             var villageDictionary = new Dictionary<int, Response>();
 

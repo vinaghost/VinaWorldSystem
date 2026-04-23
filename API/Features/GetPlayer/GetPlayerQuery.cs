@@ -26,11 +26,21 @@ namespace API.Features.GetPlayer
         {
             cancellationToken.ThrowIfCancellationRequested();
             await using var connection = await databaseService.OpenConnection(query.ServerName);
-            var response = await connection.QueryFirstOrDefaultAsync<Response>("""
-SELECT p.Id AS PlayerId, p.Name AS PlayerName, a.Id AS AllianceId, a.Name AS AllianceName, p.Population, p.VillageCount
-FROM Players p JOIN Alliances a ON p.AllianceId = a.Id
-WHERE p.Id = @PlayerId
-""", new { query.PlayerId });
+            var statement = """
+SELECT
+    p.Id           AS PlayerId,
+    p.Name         AS PlayerName,
+    a.Id           AS AllianceId,
+    a.Name         AS AllianceName,
+    p.Population,
+    p.VillageCount
+FROM
+    Players p
+    JOIN Alliances a ON p.AllianceId = a.Id
+WHERE
+    p.Id = @PlayerId
+""";
+            var response = await connection.QueryFirstOrDefaultAsync<Response>(statement, new { query.PlayerId });
             return response;
         }
     }
