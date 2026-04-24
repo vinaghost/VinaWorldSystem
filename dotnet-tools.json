@@ -2,13 +2,6 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "nuget-skills": {
-      "version": "0.4.0",
-      "commands": [
-        "nuget-skills"
-      ],
-      "rollForward": false
-    },
     "microsoft.dotnet-interactive": {
       "version": "1.0.707101",
       "commands": [
