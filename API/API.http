@@ -7,7 +7,7 @@ Accept: application/json
 GET {{API_HostAddress}}/servers/
 Accept: application/json
 ###
-GET {{API_HostAddress}}/servers/{{ServerName}}/players/basic/10
+GET {{API_HostAddress}}/servers/{{ServerName}}/players/170
 Accept: application/json
 ###
 GET {{API_HostAddress}}/servers/{{ServerName}}/villages/new/2026-04-21
@@ -16,7 +16,7 @@ Accept: application/json
 GET {{API_HostAddress}}/servers/{{ServerName}}/players/deleted/2026-04-23
 Accept: application/json
 ###
-GET {{API_HostAddress}}/servers/{{ServerName}}/players/history/170
+GET {{API_HostAddress}}/servers/{{ServerName}}/players/170/history/
 Accept: application/json
 ###
 GET {{API_HostAddress}}/health/live

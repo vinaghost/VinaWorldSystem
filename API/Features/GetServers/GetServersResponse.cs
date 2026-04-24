@@ -1,4 +1,4 @@
 ﻿namespace API.Features.GetServers
 {
-    public record GetServersResponse(string ServerName, DateTime LastUpdate, int VillageCount, int PlayerCount, int AllianceCount);
+    public record GetServersResponse(List<GetServersQuery.Response> Results);
 }

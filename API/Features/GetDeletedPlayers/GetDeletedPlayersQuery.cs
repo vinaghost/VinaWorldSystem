@@ -23,7 +23,7 @@ namespace API.Features.GetDeletedPlayers
         {
             cancellationToken.ThrowIfCancellationRequested();
             await using var connection = await databaseService.OpenConnection(query.ServerName);
-            var response = await connection.QueryAsync<Response>("""
+            var statement = """
 WITH delete_players AS (
     SELECT
         h.PlayerId,
@@ -49,7 +49,8 @@ FROM
 WHERE
     dp.row_index = 1
     AND dp.Date = Date(@Date);
-""", new { Date = query.Date.ToString("yyyy-MM-dd") });
+""";
+            var response = await connection.QueryAsync<Response>(statement, new { Date = query.Date.ToString("yyyy-MM-dd") });
             return response;
         }
     }

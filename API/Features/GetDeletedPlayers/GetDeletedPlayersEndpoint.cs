@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Features.GetDeletedPlayers
 {
-    public class GetDeletedPlayersEndpoint(GetDeletedPlayersQuery.Handler handler) : Endpoint<GetDeletedPlayersRequest, Results<Ok<List<GetDeletedPlayersResponse>>, NotFound>>
+    public class GetDeletedPlayersEndpoint(GetDeletedPlayersQuery.Handler handler) : Endpoint<GetDeletedPlayersRequest, Results<Ok<GetDeletedPlayersResponse>, NotFound>>
     {
         public override void Configure()
         {
@@ -13,20 +13,15 @@ namespace API.Features.GetDeletedPlayers
             Group<ServerGroup>();
         }
 
-        public override async Task<Results<Ok<List<GetDeletedPlayersResponse>>, NotFound>> ExecuteAsync(GetDeletedPlayersRequest request, CancellationToken cancellationToken)
+        public override async Task<Results<Ok<GetDeletedPlayersResponse>, NotFound>> ExecuteAsync(GetDeletedPlayersRequest request, CancellationToken cancellationToken)
         {
             if (request.Date > DateTime.UtcNow)
             {
-                return TypedResults.Ok(new List<GetDeletedPlayersResponse>());
+                return TypedResults.Ok(new GetDeletedPlayersResponse([]));
             }
 
-            var result = await handler.HandleAsync(new(request.ServerName, request.Date), cancellationToken);
-            var response = result.Select(r => new GetDeletedPlayersResponse(
-                r.PlayerId,
-                r.PlayerName,
-                r.DeletedDate
-            )).ToList();
-            return TypedResults.Ok(response);
+            var response = await handler.HandleAsync(new(request.ServerName, request.Date), cancellationToken);
+            return TypedResults.Ok(new GetDeletedPlayersResponse([.. response]));
         }
     }
 }

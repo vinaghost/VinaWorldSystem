@@ -11,7 +11,7 @@ namespace API.Features.GetPlayer
     {
         public override void Configure()
         {
-            Get("/players/basic/{PlayerId}");
+            Get("/players/{PlayerId}");
             AllowAnonymous();
             Group<ServerGroup>();
         }
@@ -23,7 +23,7 @@ namespace API.Features.GetPlayer
             {
                 return TypedResults.NotFound();
             }
-            return TypedResults.Ok(new GetPlayerResponse(response.PlayerId, response.PlayerName, response.AllianceId, response.AllianceName, response.VillageCount, response.Population));
+            return TypedResults.Ok(new GetPlayerResponse(response));
         }
     }
 }

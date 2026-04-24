@@ -2,7 +2,7 @@
 
 namespace API.Features.GetServers
 {
-    public class GetServersEndpoint(GetServersQuery.Handler handler) : EndpointWithoutRequest<List<GetServersResponse>>
+    public class GetServersEndpoint(GetServersQuery.Handler handler) : EndpointWithoutRequest<GetServersResponse>
     {
         public override void Configure()
         {
@@ -10,10 +10,10 @@ namespace API.Features.GetServers
             AllowAnonymous();
         }
 
-        public override async Task<List<GetServersResponse>> ExecuteAsync(CancellationToken cancellationToken)
+        public override async Task<GetServersResponse> ExecuteAsync(CancellationToken cancellationToken)
         {
             var response = await handler.HandleAsync(new(), cancellationToken);
-            return [.. response.Select(s => new GetServersResponse(s.ServerName, s.LastUpdate, s.VillageCount, s.PlayerCount, s.AllianceCount))];
+            return new GetServersResponse([.. response]);
         }
     }
 }

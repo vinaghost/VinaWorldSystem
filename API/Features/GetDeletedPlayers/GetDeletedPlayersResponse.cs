@@ -1,8 +1,4 @@
 namespace API.Features.GetDeletedPlayers
 {
-    public record GetDeletedPlayersResponse(
-        int PlayerId,
-        string PlayerName,
-        DateTime DeletedDate
-    );
+    public record GetDeletedPlayersResponse(List<GetDeletedPlayersQuery.Response> Result);
 }

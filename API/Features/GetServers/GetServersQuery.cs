@@ -25,7 +25,16 @@ namespace API.Features.GetServers
         {
             cancellationToken.ThrowIfCancellationRequested();
             await using var connection = await databaseService.OpenConnection("Servers");
-            var response = await connection.QueryAsync<Response>("SELECT LastUpdate, Url AS ServerName, VillageCount, PlayerCount, AllianceCount FROM Servers");
+            var statement = """
+SELECT
+    LastUpdate,
+    Url AS ServerName,
+    VillageCount,
+    PlayerCount,
+    AllianceCount
+FROM Servers
+""";
+            var response = await connection.QueryAsync<Response>(statement);
             return response;
         }
     }

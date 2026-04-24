@@ -10,7 +10,7 @@ namespace API.Features.GetPlayerHistory
     {
         public override void Configure()
         {
-            Get("/players/history/{PlayerId}");
+            Get("/players/{PlayerId}/history");
             AllowAnonymous();
             Group<ServerGroup>();
         }

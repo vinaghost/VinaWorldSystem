@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Features.GetNewVillages
 {
-    public class GetNewVillagesEndpoint(GetNewVillagesQuery.Handler handler) : Endpoint<GetNewVillagesRequest, Results<Ok<List<GetNewVillagesResponse>>, NotFound>>
+    public class GetNewVillagesEndpoint(GetNewVillagesQuery.Handler handler) : Endpoint<GetNewVillagesRequest, Results<Ok<GetNewVillagesResponse>, NotFound>>
     {
         public override void Configure()
         {
@@ -13,28 +13,15 @@ namespace API.Features.GetNewVillages
             Group<ServerGroup>();
         }
 
-        public override async Task<Results<Ok<List<GetNewVillagesResponse>>, NotFound>> ExecuteAsync(GetNewVillagesRequest request, CancellationToken cancellationToken)
+        public override async Task<Results<Ok<GetNewVillagesResponse>, NotFound>> ExecuteAsync(GetNewVillagesRequest request, CancellationToken cancellationToken)
         {
             if (request.Date > DateTime.UtcNow)
             {
-                return TypedResults.Ok(new List<GetNewVillagesResponse>());
+                return TypedResults.Ok(new GetNewVillagesResponse([]));
             }
 
-            var result = await handler.HandleAsync(new(request.ServerName, request.Date), cancellationToken);
-            var response = result.Select(r => new GetNewVillagesResponse(
-                r.PlayerId,
-                r.PlayerName,
-                r.AllianceId,
-                r.AllianceName,
-                r.X,
-                r.Y,
-                r.Tribe,
-                r.Population,
-                r.IsCapital,
-                r.IsCity,
-                r.IsHarbor
-            )).ToList();
-            return TypedResults.Ok(response);
+            var response = await handler.HandleAsync(new(request.ServerName, request.Date), cancellationToken);
+            return TypedResults.Ok(new GetNewVillagesResponse([.. response]));
         }
     }
 }
