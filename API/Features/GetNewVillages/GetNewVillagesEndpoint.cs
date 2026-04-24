@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Features.GetNewVillages
 {
-    public class GetNewVillagesEndpoint(GetNewVillagesQuery.Handler handler) : Endpoint<GetNewVillagesRequest, Results<Ok<GetNewVillagesResponse>, NotFound>>
+    public class GetNewVillagesEndpoint(GetNewVillagesQuery.Handler handler) :
+        Endpoint<
+            GetNewVillagesRequest,
+            Results<Ok<GetNewVillagesResponse>, NotFound>>
     {
         public override void Configure()
         {

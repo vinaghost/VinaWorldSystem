@@ -1,13 +1,13 @@
 ﻿using API.Domains.EndpointGroups;
-using API.Features.Shared;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Features.GetPlayer
 {
-    public record GetPlayerRequest(string ServerName, int PlayerId) : ServerNameRequest(ServerName);
-
-    public class GetPlayerEndpoint(GetPlayerQuery.Handler handler) : Endpoint<GetPlayerRequest, Results<Ok<GetPlayerResponse>, NotFound>>
+    public class GetPlayerEndpoint(GetPlayerQuery.Handler handler) :
+        Endpoint<
+            GetPlayerRequest,
+            Results<Ok<GetPlayerResponse>, NotFound>>
     {
         public override void Configure()
         {

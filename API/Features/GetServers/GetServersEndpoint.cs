@@ -2,7 +2,9 @@
 
 namespace API.Features.GetServers
 {
-    public class GetServersEndpoint(GetServersQuery.Handler handler) : EndpointWithoutRequest<GetServersResponse>
+    public class GetServersEndpoint(GetServersQuery.Handler handler)
+        : EndpointWithoutRequest<
+            GetServersResponse>
     {
         public override void Configure()
         {

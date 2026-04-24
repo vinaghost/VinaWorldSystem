@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Features.GetDeletedPlayers
 {
-    public class GetDeletedPlayersEndpoint(GetDeletedPlayersQuery.Handler handler) : Endpoint<GetDeletedPlayersRequest, Results<Ok<GetDeletedPlayersResponse>, NotFound>>
+    public class GetDeletedPlayersEndpoint(GetDeletedPlayersQuery.Handler handler) :
+        Endpoint<
+            GetDeletedPlayersRequest,
+            Results<Ok<GetDeletedPlayersResponse>, NotFound>>
     {
         public override void Configure()
         {

@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Features.GetPlayerHistory
 {
-    public class GetPlayerHistoryEndpoint(GetPlayerHistoryQuery.Handler playerHandler, GetVillagesHistoryQuery.Handler villageHandler) : Endpoint<
-        GetPlayerHistoryRequest,
-        Results<Ok<GetPlayerHistoryResponse>, NotFound>>
+    public class GetPlayerHistoryEndpoint(GetPlayerHistoryQuery.Handler playerHandler, GetVillagesHistoryQuery.Handler villageHandler) :
+        Endpoint<
+            GetPlayerHistoryRequest,
+            Results<Ok<GetPlayerHistoryResponse>, NotFound>>
     {
         public override void Configure()
         {
