@@ -1,6 +1,6 @@
+using API.Infrastructure.Caching;
 using API.Infrastructure.Services;
 using Dapper;
-using FastEndpoints;
 using Immediate.Handlers.Shared;
 
 namespace API.Features.GetPlayerHistory
@@ -8,7 +8,7 @@ namespace API.Features.GetPlayerHistory
     [Handler]
     public static partial class GetPlayerHistoryQuery
     {
-        public sealed record Query(string ServerName, int PlayerId);
+        public sealed record Query(string ServerName, int PlayerId) : DefaultCachedQuery($"{nameof(GetPlayerHistoryQuery)}_{ServerName}_{PlayerId}");
         public record Response
         {
             public required int PlayerId { get; init; }

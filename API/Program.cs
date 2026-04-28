@@ -1,11 +1,16 @@
 using API;
+using API.Infrastructure.Caching;
 using API.Infrastructure.Middleware;
 using API.Infrastructure.Services;
 using FastEndpoints;
+using Immediate.Handlers.Shared;
 using MySqlConnector;
 using Serilog;
 using Serilog.Events;
 
+[assembly: Behaviors(
+    typeof(QueryCachingBehavior<,>)
+)]
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .Enrich.FromLogContext()
@@ -16,6 +21,9 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
+
+    builder.Services.AddMemoryCache();
+    builder.Services.AddSingleton<CacheService>();
 
     builder.Services.AddFastEndpoints();
     builder.Services.AddServiceHealthChecks();

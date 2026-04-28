@@ -1,4 +1,5 @@
-﻿using API.Infrastructure.Services;
+﻿using API.Infrastructure.Caching;
+using API.Infrastructure.Services;
 using Dapper;
 using Immediate.Handlers.Shared;
 
@@ -7,7 +8,7 @@ namespace API.Features.GetServers
     [Handler]
     public static partial class GetServersQuery
     {
-        public sealed record Query;
+        public sealed record Query() : DefaultCachedQuery($"{nameof(GetServersQuery)}");
         public record Response()
         {
             public required string ServerName { get; init; }

@@ -1,4 +1,5 @@
-﻿using API.Infrastructure.Services;
+﻿using API.Infrastructure.Caching;
+using API.Infrastructure.Services;
 using Dapper;
 using Immediate.Handlers.Shared;
 
@@ -7,7 +8,7 @@ namespace API.Features.GetPlayer
     [Handler]
     public static partial class GetPlayerQuery
     {
-        public sealed record Query(string ServerName, int PlayerId);
+        public sealed record Query(string ServerName, int PlayerId) : DefaultCachedQuery($"{nameof(GetPlayerQuery)}_{ServerName}_{PlayerId}");
         public record Response()
         {
             public required int PlayerId { get; init; }

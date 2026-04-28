@@ -1,4 +1,5 @@
-﻿using API.Infrastructure.Services;
+﻿using API.Infrastructure.Caching;
+using API.Infrastructure.Services;
 using Dapper;
 using Immediate.Handlers.Shared;
 
@@ -7,7 +8,7 @@ namespace API.Features.GetNewVillages
     [Handler]
     public static partial class GetNewVillagesQuery
     {
-        public sealed record Query(string ServerName, DateTime Date);
+        public sealed record Query(string ServerName, DateTime Date) : DefaultCachedQuery($"{nameof(GetNewVillagesQuery)}_{ServerName}_{Date:yyyy-MM-dd}");
         public record Response()
         {
             public required int PlayerId { get; init; }
