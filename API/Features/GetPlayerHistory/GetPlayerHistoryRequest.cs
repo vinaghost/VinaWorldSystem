@@ -1,4 +1,4 @@
-using API.Features.Shared;
+using API.Groups.Server;
 
 namespace API.Features.GetPlayerHistory
 {

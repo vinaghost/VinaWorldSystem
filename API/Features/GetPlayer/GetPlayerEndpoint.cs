@@ -1,4 +1,4 @@
-﻿using API.Domains.EndpointGroups;
+﻿using API.Groups.Player;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -11,9 +11,10 @@ namespace API.Features.GetPlayer
     {
         public override void Configure()
         {
-            Get("/players/{PlayerId}");
+            Get("{PlayerId}");
+            Summary(s => s.Summary = "Get player by ID");
             AllowAnonymous();
-            Group<ServerGroup>();
+            Group<PlayerGroup>();
         }
 
         public override async Task<Results<Ok<GetPlayerResponse>, NotFound>> ExecuteAsync(GetPlayerRequest request, CancellationToken cancellationToken)

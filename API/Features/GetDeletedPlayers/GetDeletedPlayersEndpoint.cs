@@ -1,4 +1,4 @@
-using API.Domains.EndpointGroups;
+using API.Groups.Player;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -11,9 +11,10 @@ namespace API.Features.GetDeletedPlayers
     {
         public override void Configure()
         {
-            Get("/players/deleted/{Date}");
+            Get("deleted/{Date}");
+            Summary(s => s.Summary = "Get deleted players by date");
             AllowAnonymous();
-            Group<ServerGroup>();
+            Group<PlayerGroup>();
         }
 
         public override async Task<Results<Ok<GetDeletedPlayersResponse>, NotFound>> ExecuteAsync(GetDeletedPlayersRequest request, CancellationToken cancellationToken)

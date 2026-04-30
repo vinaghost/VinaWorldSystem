@@ -1,4 +1,4 @@
-using API.Domains.EndpointGroups;
+using API.Groups.Player;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -11,9 +11,10 @@ namespace API.Features.GetPlayerHistory
     {
         public override void Configure()
         {
-            Get("/players/{PlayerId}/history");
+            Get("{PlayerId}/history");
+            Summary(s => s.Summary = "Get player history");
             AllowAnonymous();
-            Group<ServerGroup>();
+            Group<PlayerGroup>();
         }
 
         public override async Task<Results<Ok<GetPlayerHistoryResponse>, NotFound>> ExecuteAsync(

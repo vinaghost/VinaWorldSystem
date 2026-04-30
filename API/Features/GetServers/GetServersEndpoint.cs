@@ -9,6 +9,8 @@ namespace API.Features.GetServers
         public override void Configure()
         {
             Get("/servers");
+            Summary(s => s.Summary = "Get all servers");
+            Description(b => b.WithTags("Servers"));
             AllowAnonymous();
         }
 

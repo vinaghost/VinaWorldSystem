@@ -9,7 +9,8 @@ namespace API.Features.GetServers
     public static partial class GetServersQuery
     {
         public sealed record Query() : DefaultCachedQuery($"{nameof(GetServersQuery)}");
-        public record Response()
+
+        public sealed record Response()
         {
             public required string ServerName { get; init; }
             public required DateTime LastUpdate { get; init; }

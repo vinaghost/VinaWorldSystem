@@ -1,4 +1,4 @@
-using API.Domains.EndpointGroups;
+using API.Groups.Village;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -11,9 +11,10 @@ namespace API.Features.GetNewVillages
     {
         public override void Configure()
         {
-            Get("/villages/new/{Date}");
+            Get("new/{Date}");
+            Summary(s => s.Summary = "Get new villages by date");
             AllowAnonymous();
-            Group<ServerGroup>();
+            Group<VillageGroup>();
         }
 
         public override async Task<Results<Ok<GetNewVillagesResponse>, NotFound>> ExecuteAsync(GetNewVillagesRequest request, CancellationToken cancellationToken)
