@@ -17,7 +17,7 @@ namespace API.Groups.Server
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
-            await using var connection = await databaseService.OpenConnection(query.ServerName);
+            await using var connection = await databaseService.OpenConnection("Servers");
             var statement = """
 SELECT
     id AS ServerId
