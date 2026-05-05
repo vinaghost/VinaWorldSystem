@@ -1,0 +1,186 @@
+.app-shell {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  padding: 2rem 1rem 2.5rem;
+}
+
+.app-header {
+  margin-bottom: 1.2rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+  color: #112a46;
+}
+
+.app-header p {
+  margin: 0.4rem 0 0;
+  color: #49627b;
+}
+
+.shared-controls {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 320px));
+  gap: 0.8rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #183855;
+  font-weight: 600;
+}
+
+.field-group select,
+.field-group input {
+  height: 2.25rem;
+  border: 1px solid #bfd1e2;
+  border-radius: 8px;
+  padding: 0.35rem 0.55rem;
+  font: inherit;
+  color: #12324f;
+  background: #ffffff;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.tab-button {
+  border: 1px solid #aec8dc;
+  background: #f3f8fd;
+  color: #14324f;
+  border-radius: 999px;
+  padding: 0.52rem 0.95rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab-button.active {
+  background: #14324f;
+  color: #ffffff;
+  border-color: #14324f;
+}
+
+.tab-panel {
+  border: 1px solid #d3e2ef;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 0.95rem;
+  box-shadow: 0 12px 28px rgba(17, 42, 70, 0.08);
+}
+
+.more-cp-section {
+  margin-top: 1rem;
+}
+
+.panel-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.8rem;
+}
+
+.panel-topbar h2 {
+  margin: 0;
+  font-size: 1.06rem;
+  color: #183855;
+}
+
+.tab-meta p {
+  margin: 0.2rem 0 0;
+  color: #3f5f7a;
+  font-size: 0.88rem;
+}
+
+.add-row-button {
+  border: 1px solid #14324f;
+  background: #14324f;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 0.45rem 0.78rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1180px;
+}
+
+th,
+td {
+  border: 1px solid #dde8f2;
+  padding: 0.45rem;
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.9rem;
+}
+
+th {
+  background: #eff5fb;
+  color: #1a3e60;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+  background: #fbfdff;
+}
+
+.note-input {
+  width: 100%;
+  min-width: 170px;
+  min-height: 2.8rem;
+  resize: vertical;
+  border: 1px solid #bfd1e2;
+  border-radius: 6px;
+  padding: 0.4rem;
+  font: inherit;
+}
+
+.done-cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.done-cell input {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .app-shell {
+    padding: 1rem 0.6rem 1.4rem;
+  }
+
+  .shared-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .add-row-button {
+    width: 100%;
+  }
+}
