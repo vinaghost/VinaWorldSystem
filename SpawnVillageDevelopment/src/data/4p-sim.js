@@ -94,4 +94,19 @@ export const fourPartySimNote = [
 Use the rewards to level up your hero to full health after smashing animals. Put the rest in resc production. 
 The chances of using your hero for 24h are very small and putting some extra points in resc production helps generating more resc when your hero can't clear any oasis anymore.`},
     {"index": 4, "note": "Raid Oasis until you need to walk 1h+, of which you are sure you will clear the animals, after that considor to do adventure 2 (resc bounty). Adventure gives about 2300 resc."},
+    {"index": 5, "note": "Continue to raid oasis until 2h+ walkig time, then you should consider to put almost all points in resc production with the book of wisdom for hero. Book is obtained in adventure 6, usually comes within 24h after starting."},
+    {"index": 6, "note": `For farming it will be difficult to determine how many units to make. In the sheet we added some general calculations which can help to determine if you can make it profitable. 
+Recommended numbers are: 
+- 7 to 12 for Cavalry 
+- 30 to 60 for Infantery. 
+Timing of making units is also important, oasis only produce after all animals are killed. So to start with farming units right away is not recommended. Most efficient amount of farm units is situational. Base this number on touch and feel results on nearby oasis.`},
+    {"index": 7, "note": "Important reminder: TT & EI can be sent solo to an empty oasis!"},
+    {"index": 8, "note": "Goal: reach here in 12/16h"},
+    {"index": 9, "note": "Goal: party 1 in max 48h"},
+    {"index": 10, "note": `Check here which fields you want to upgrade based on ROI or invest more in farm units, bare in mind you already farm and get more resc income. Might be better to focus more on CP production, since that needs to go up anyway to make it in 4 parties. Nonetheless ROI for the fields 5 are:
+Wood - 67,4h
+Clay - 67,7h
+Iron - 82,5h
+Crop - 76,7h
+ROI is calculated with the reward cashed with hero level 6. Iron mines are not recommended to do in any situation, but is a possibility. `},
 ]

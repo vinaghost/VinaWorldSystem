@@ -72,8 +72,8 @@ thead th {
   color: #5f6472;
 }
 
-.done-row td:nth-child(2),
-.done-row td:nth-child(3) {
+.done-row td:nth-child(3),
+.done-row td:nth-child(4) {
   text-decoration: line-through;
 }
 
@@ -83,6 +83,42 @@ thead th {
   color: #17320a;
   font-weight: 600;
   border-bottom: 1px solid #d2e8b9;
+}
+
+.farm-calc-row td {
+  background: #eef2f8;
+  font-weight: 600;
+}
+
+.farm-calc-label {
+  color: #1f2c44;
+}
+
+.farm-calc-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #c4ccda;
+  border-radius: 0.35rem;
+  padding: 0.25rem 0.45rem;
+  font: inherit;
+}
+
+.farm-calc-unit-input {
+  max-width: 22rem;
+}
+
+.farm-calc-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.farm-calc-control .farm-calc-input {
+  width: 7rem;
+}
+
+.farm-calc-suffix {
+  color: #1f2c44;
 }
 
 .pwa-badge-wrap {
