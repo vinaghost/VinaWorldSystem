@@ -83,3 +83,15 @@ export const threePartyFarmData = [
     {"To do":"Party 4","Tier":0,"task":"","cost":20330,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
     {"To do":"Don't forget about the 3k resc for launching!","Tier":0,"task":"","cost":3000,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
 ];
+
+export const threePartyFarmNote = [
+    {"index": 0, "note": "Send hero on the shortest adventure to get a horse. Then smash animals!"},
+    {"index": 1, "note": "Activate 25% resc production bonus."},
+    {"index": 3, "note": `Put points in strength according to the amount of oasis you can raid.
+0 oasis: max 2 points 
+1-5 oasis: 8/12 points
+6+ oasis: 12(+) points
+Use the rewards to level up your hero to full health after smashing animals. Put the rest in resc production. 
+The chances of using your hero for 24h are very small and putting some extra points in resc production helps generating more resc when your hero can't clear any oasis anymore.`},
+    {"index": 4, "note": "Raid Oasis until you need to walk 1h+, of which you are sure you will clear the animals, after that considor to do adventure 2 (resc bounty). Adventure gives about 2300 resc."},
+]
