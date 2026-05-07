@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import { stable_change, troop_cost, warehouse_change } from './data/troop'
+import { settler_cost, stable_change, troop_cost, warehouse_change } from './data/troop'
 import PWABadge from './PWABadge.jsx'
 import { TABS } from './tabs'
 import './App.css'
@@ -34,6 +34,7 @@ function buildComputedRows(rows, options = {}) {
     applyEquitesOverrides = false,
     stableOverrideIndex = -1,
     warehouseUpdateIndex = -1,
+    selectedSettlerCost = 0,
   } = options
   let balance = INITIALS.balance
   let previousRewardRes = 0
@@ -63,6 +64,13 @@ function buildComputedRows(rows, options = {}) {
 
   rows.forEach((row, index) => {
     let currentRow = row
+
+    if (String(row['To do']).toLowerCase().includes('train settler')) {
+      currentRow = {
+        ...row,
+        cost: getNumber(row.task) * selectedSettlerCost,
+      }
+    }
 
     if (applyEquitesOverrides && index === stableOverrideIndex) {
       currentRow = {
@@ -155,6 +163,7 @@ function buildComputedRows(rows, options = {}) {
 function App() {
   const [activeTab, setActiveTab] = useState(TABS[0].id)
   const [checkedByTab, setCheckedByTab] = useState({})
+  const [selectedTribe, setSelectedTribe] = useState(settler_cost[0]?.unit ?? '')
   const [selectedUnit, setSelectedUnit] = useState(troop_cost[0]?.unit ?? '')
   const [farmUnitCount, setFarmUnitCount] = useState(10)
   const [farmUnitCountSecond, setFarmUnitCountSecond] = useState(10)
@@ -201,11 +210,16 @@ function App() {
   }, [activeTabConfig])
 
   const activeChecks = checkedByTab[activeTab] ?? {}
+  const selectedSettler = useMemo(
+    () => settler_cost.find((tribe) => tribe.unit === selectedTribe) ?? settler_cost[0],
+    [selectedTribe],
+  )
   const selectedTroop = useMemo(
     () => troop_cost.find((troop) => troop.unit === selectedUnit) ?? troop_cost[0],
     [selectedUnit],
   )
   const activeFarmConfig = activeTabConfig.farmConfig
+  const selectedSettlerCost = getNumber(selectedSettler?.cost)
 
   const researchCost = getNumber(selectedTroop?.research)
   const trainCost = getNumber(farmUnitCount) * getNumber(selectedTroop?.train)
@@ -236,6 +250,7 @@ function App() {
         applyEquitesOverrides,
         stableOverrideIndex: activeFarmConfig?.equitesStableIndex ?? -1,
         warehouseUpdateIndex: activeFarmConfig?.equitesWarehouseUpdateIndex ?? -1,
+        selectedSettlerCost,
       }),
     [
       activeTabConfig,
@@ -245,6 +260,7 @@ function App() {
       secondTrainCost,
       showFarmCalc,
       applyEquitesOverrides,
+      selectedSettlerCost,
     ],
   )
 
@@ -275,6 +291,20 @@ function App() {
       <header className="app-header">
         <h1>Spawn Village Development Checklist</h1>
         <p>Track your build order for 3-party and 4-party routes.</p>
+        <div className="tribe-select-wrap">
+          <label htmlFor="tribe-select">Tribe:</label>
+          <select
+            id="tribe-select"
+            value={selectedTribe}
+            onChange={(event) => setSelectedTribe(event.target.value)}
+          >
+            {settler_cost.map((tribe) => (
+              <option key={tribe.unit} value={tribe.unit}>
+                {tribe.unit}
+              </option>
+            ))}
+          </select>
+        </div>
       </header>
 
       <nav className="tabs" aria-label="Checklist tabs">

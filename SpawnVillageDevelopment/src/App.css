@@ -18,6 +18,20 @@
   color: #5c5f69;
 }
 
+.tribe-select-wrap {
+  margin-top: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.tribe-select-wrap select {
+  border: 1px solid #c4ccda;
+  border-radius: 0.4rem;
+  padding: 0.25rem 0.45rem;
+  font: inherit;
+}
+
 .tabs {
   display: flex;
   flex-wrap: wrap;
