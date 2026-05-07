@@ -3,7 +3,7 @@ import { fourPartyFarmData, fourPartyFarmNote } from './data/4p-farm'
 import { fourPartySimData, fourPartySimNote } from './data/4p-sim'
 import { threePartyFarmData, threePartyFarmNote } from './data/3p-farm'
 import { threePartySimData, threePartySimNote } from './data/3p-sim'
-import { troop_cost } from './data/troop'
+import { stable_change, troop_cost, warehouse_change } from './data/troop'
 import PWABadge from './PWABadge.jsx'
 import './App.css'
 
@@ -45,6 +45,7 @@ function buildComputedRows(rows, options = {}) {
     trainCost = 0,
     secondTrainCost = 0,
     enableCalcRows = false,
+    applyEquitesOverrides = false,
   } = options
   let balance = INITIALS.balance
   let previousRewardRes = 0
@@ -73,7 +74,47 @@ function buildComputedRows(rows, options = {}) {
   const result = []
 
   rows.forEach((row, index) => {
+    let currentRow = row
+
+    if (applyEquitesOverrides && index === 49) {
+      currentRow = {
+        ...row,
+        task: stable_change[1].task,
+        cost: stable_change[1].cost,
+        'cp prod': stable_change[1]['cp prod'],
+        pop: stable_change[1].pop,
+      }
+    }
+
+    if (applyEquitesOverrides && index === 72) {
+      currentRow = {
+        ...row,
+        task: warehouse_change[1].task,
+        cost: warehouse_change[1].cost,
+        'cp prod': warehouse_change[1]['cp prod'],
+        pop: warehouse_change[1].pop,
+      }
+    }
+
     if (enableCalcRows && index === calcInsertIndex) {
+      if (applyEquitesOverrides) {
+        result.push(
+          applyComputedValues({
+            kind: 'task',
+            checkKey: 'equites-warehouse-to-5',
+            displayNo: '',
+            'To do': 'Warehouse',
+            Tier: 0,
+            task: warehouse_change[0].task,
+            cost: warehouse_change[0].cost,
+            'reward res': 0,
+            'reward exp': 0,
+            'cp prod': warehouse_change[0]['cp prod'],
+            pop: warehouse_change[0].pop,
+          }),
+        )
+      }
+
       result.push(
         applyComputedValues({
           kind: 'calc-research',
@@ -113,8 +154,9 @@ function buildComputedRows(rows, options = {}) {
     result.push(
       applyComputedValues({
         kind: 'task',
+        checkKey: String(index),
         index,
-        ...row,
+        ...currentRow,
       }),
     )
   })
@@ -192,6 +234,7 @@ function App() {
   const secondPerHour24 = secondBreakEven / 24
   const secondPerHour48 = secondBreakEven / 48
   const showFarmCalc = activeTab === FARM_CALC_TAB_ID
+  const applyEquitesOverrides = showFarmCalc && selectedTroop?.unit === 'Equites Imperatoris'
   const computedRows = useMemo(
     () =>
       buildComputedRows(activeTabConfig.rows, {
@@ -201,16 +244,24 @@ function App() {
         trainCost,
         secondTrainCost,
         enableCalcRows: showFarmCalc,
+        applyEquitesOverrides,
       }),
-    [activeTabConfig, researchCost, trainCost, secondTrainCost, showFarmCalc],
+    [
+      activeTabConfig,
+      researchCost,
+      trainCost,
+      secondTrainCost,
+      showFarmCalc,
+      applyEquitesOverrides,
+    ],
   )
 
-  const toggleDone = (rowIndex) => {
+  const toggleDone = (rowKey) => {
     setCheckedByTab((previous) => {
       const currentTabChecks = previous[activeTab] ?? {}
       const nextTabChecks = {
         ...currentTabChecks,
-        [rowIndex]: !currentTabChecks[rowIndex],
+        [rowKey]: !currentTabChecks[rowKey],
       }
 
       const next = {
@@ -365,24 +416,27 @@ function App() {
                 )
               }
 
-              const isDone = Boolean(activeChecks[row.index])
+              const rowCheckKey = row.checkKey ?? String(row.index)
+              const isDone = Boolean(activeChecks[rowCheckKey])
               const rowNotes = notesByIndex[row.index] ?? []
+              const rowNumberLabel = row.displayNo ?? row.index + 1
+              const rowKeyBase = row.index ?? rowCheckKey
 
               return (
-                <Fragment key={`${activeTab}-${row.index}-group`}>
+                <Fragment key={`${activeTab}-${rowKeyBase}-group`}>
                   {rowNotes.map((note, noteIndex) => (
-                    <tr key={`${activeTab}-${row.index}-note-${noteIndex}`} className="note-row">
+                    <tr key={`${activeTab}-${rowKeyBase}-note-${noteIndex}`} className="note-row">
                       <td colSpan={13}>{note}</td>
                     </tr>
                   ))}
-                  <tr key={`${activeTab}-${row.index}`} className={isDone ? 'done-row' : ''}>
-                    <td>{row.index + 1}</td>
+                  <tr key={`${activeTab}-${rowKeyBase}`} className={isDone ? 'done-row' : ''}>
+                    <td>{rowNumberLabel}</td>
                     <td>
                       <input
                         type="checkbox"
                         checked={isDone}
-                        onChange={() => toggleDone(row.index)}
-                        aria-label={`Mark row ${row.index + 1} as done`}
+                        onChange={() => toggleDone(rowCheckKey)}
+                        aria-label={`Mark row ${rowNumberLabel || rowCheckKey} as done`}
                       />
                     </td>
                     <td>{row['To do']}</td>
