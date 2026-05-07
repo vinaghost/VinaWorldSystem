@@ -77,7 +77,6 @@ export const threePartyFarmData = [
     {"To do":"Warehouse","Tier":0,"task":"to 8","cost":2360,"reward res":0,"reward exp":0,"cp prod":0,"pop":1},
     {"To do":"Party 1","Tier":0,"task":"","cost":20330,"reward res":2400,"reward exp":40,"cp prod":0,"pop":0},
     {"To do":"Residence","Tier":0,"task":"to 10","cost":34635,"reward res":4800,"reward exp":80,"cp prod":5,"pop":3},
-    {"To do":"Train settler(s)","Tier":0,"task":"0","cost":0,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
     {"To do":"Party 3","Tier":0,"task":"","cost":20330,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
     {"To do":"Train settler(s)","Tier":0,"task":"3","cost":54300,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
     {"To do":"Party 4","Tier":0,"task":"","cost":20330,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},

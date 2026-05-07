@@ -1,18 +1,8 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import { fourPartyFarmData, fourPartyFarmNote } from './data/4p-farm'
-import { fourPartySimData, fourPartySimNote } from './data/4p-sim'
-import { threePartyFarmData, threePartyFarmNote } from './data/3p-farm'
-import { threePartySimData, threePartySimNote } from './data/3p-sim'
 import { stable_change, troop_cost, warehouse_change } from './data/troop'
 import PWABadge from './PWABadge.jsx'
+import { TABS } from './tabs'
 import './App.css'
-
-const TABS = [
-  { id: '4p-sim', label: '4 Party - Sim', rows: fourPartySimData, notes: fourPartySimNote },
-  { id: '4p-farm', label: '4 Party - Farm', rows: fourPartyFarmData, notes: fourPartyFarmNote },
-  { id: '3p-sim', label: '3 Party - Sim', rows: threePartySimData, notes: threePartySimNote },
-  { id: '3p-farm', label: '3 Party - Farm', rows: threePartyFarmData, notes: threePartyFarmNote },
-]
 
 const INITIALS = {
   balance: 3000,
@@ -20,10 +10,6 @@ const INITIALS = {
   cp: 0,
   population: 0,
 }
-
-const FARM_CALC_TAB_ID = '3p-farm'
-const FARM_CALC_INSERT_INDEX = 50
-const FARM_CALC_SECOND_INSERT_INDEX = 61
 
 function getNumber(value) {
   return Number(value) || 0
@@ -46,6 +32,8 @@ function buildComputedRows(rows, options = {}) {
     secondTrainCost = 0,
     enableCalcRows = false,
     applyEquitesOverrides = false,
+    stableOverrideIndex = -1,
+    warehouseUpdateIndex = -1,
   } = options
   let balance = INITIALS.balance
   let previousRewardRes = 0
@@ -76,7 +64,7 @@ function buildComputedRows(rows, options = {}) {
   rows.forEach((row, index) => {
     let currentRow = row
 
-    if (applyEquitesOverrides && index === 49) {
+    if (applyEquitesOverrides && index === stableOverrideIndex) {
       currentRow = {
         ...row,
         task: stable_change[1].task,
@@ -86,7 +74,7 @@ function buildComputedRows(rows, options = {}) {
       }
     }
 
-    if (applyEquitesOverrides && index === 72) {
+    if (applyEquitesOverrides && index === warehouseUpdateIndex) {
       currentRow = {
         ...row,
         task: warehouse_change[1].task,
@@ -217,6 +205,7 @@ function App() {
     () => troop_cost.find((troop) => troop.unit === selectedUnit) ?? troop_cost[0],
     [selectedUnit],
   )
+  const activeFarmConfig = activeTabConfig.farmConfig
 
   const researchCost = getNumber(selectedTroop?.research)
   const trainCost = getNumber(farmUnitCount) * getNumber(selectedTroop?.train)
@@ -233,21 +222,24 @@ function App() {
   const perHour48 = breakEven / 48
   const secondPerHour24 = secondBreakEven / 24
   const secondPerHour48 = secondBreakEven / 48
-  const showFarmCalc = activeTab === FARM_CALC_TAB_ID
+  const showFarmCalc = Boolean(activeFarmConfig)
   const applyEquitesOverrides = showFarmCalc && selectedTroop?.unit === 'Equites Imperatoris'
   const computedRows = useMemo(
     () =>
       buildComputedRows(activeTabConfig.rows, {
-        calcInsertIndex: FARM_CALC_INSERT_INDEX,
-        secondCalcInsertIndex: FARM_CALC_SECOND_INSERT_INDEX,
+        calcInsertIndex: activeFarmConfig?.firstInsertIndex ?? -1,
+        secondCalcInsertIndex: activeFarmConfig?.secondInsertIndex ?? -1,
         researchCost,
         trainCost,
         secondTrainCost,
         enableCalcRows: showFarmCalc,
         applyEquitesOverrides,
+        stableOverrideIndex: activeFarmConfig?.equitesStableIndex ?? -1,
+        warehouseUpdateIndex: activeFarmConfig?.equitesWarehouseUpdateIndex ?? -1,
       }),
     [
       activeTabConfig,
+      activeFarmConfig,
       researchCost,
       trainCost,
       secondTrainCost,
