@@ -26,7 +26,7 @@ export const fourPartySimData = [
     {"To do":"Complete economy","Tier":1,"task":"all res to 2","cost":0,"reward res":2400,"reward exp":40,"cp prod":0,"pop":0},
     {"To do":"Population","Tier":1,"task":"50","cost":0,"reward res":1500,"reward exp":25,"cp prod":0,"pop":0},
     {"To do":"Warehouse","Tier":2,"task":"to 3","cost":1220,"reward res":600,"reward exp":10,"cp prod":1,"pop":2},
-    {"To do":"Barracs","Tier":1,"task":"to 1","cost":730,"reward res":600,"reward exp":10,"cp prod":1,"pop":4},
+    {"To do":"Barracks","Tier":1,"task":"to 1","cost":730,"reward res":600,"reward exp":10,"cp prod":1,"pop":4},
     {"To do":"Woodcutters","Tier":2,"task":"1x to 4","cost":1860,"reward res":1200,"reward exp":20,"cp prod":1,"pop":2},
     {"To do":"Croplands","Tier":2,"task":"1x to 4","cost":1860,"reward res":1200,"reward exp":20,"cp prod":1,"pop":0},
     {"To do":"Clay pits","Tier":2,"task":"1x to 4","cost":1870,"reward res":1200,"reward exp":20,"cp prod":1,"pop":2},
@@ -35,7 +35,7 @@ export const fourPartySimData = [
     {"To do":"Cranny","Tier":3,"task":"to 6","cost":1065,"reward res":900,"reward exp":15,"cp prod":1,"pop":1},
     {"To do":"Main Building","Tier":3,"task":"to 7","cost":2395,"reward res":1800,"reward exp":30,"cp prod":4,"pop":6},
     {"To do":"Culture point production","Tier":1,"task":"50","cost":0,"reward res":1500,"reward exp":25,"cp prod":0,"pop":0},
-    {"To do":"Barracs","Tier":2,"task":"to 3","cost":2135,"reward res":600,"reward exp":10,"cp prod":1,"pop":4},
+    {"To do":"Barracks","Tier":2,"task":"to 3","cost":2135,"reward res":600,"reward exp":10,"cp prod":1,"pop":4},
     {"To do":"Academy","Tier":1,"task":"to 1","cost":510,"reward res":600,"reward exp":10,"cp prod":5,"pop":4},
     {"To do":"One cropland","Tier":0,"task":"to 3","cost":695,"reward res":0,"reward exp":0,"cp prod":1,"pop":0},
     {"To do":"Smithy","Tier":1,"task":"to 1","cost":1090,"reward res":600,"reward exp":10,"cp prod":2,"pop":4},
@@ -85,28 +85,36 @@ export const fourPartySimData = [
     {"To do":"Don't forget about the 3k resc for launching!","Tier":0,"task":"","cost":3000,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
 ];
 export const fourPartySimNote = [
-    {"index": 0, "note": "Send hero on the shortest adventure to get a horse. Then smash animals!"},
-    {"index": 1, "note": "Activate 25% resc production bonus."},
-    {"index": 3, "note": `Put points in strength according to the amount of oasis you can raid.
+    {"index":0,"note":`Send Hero only on first adventure
+                        Remember watch ads for Reduce adventure duration by 25% and Increased adventure danger to hard `},
+    {"index":0,"note":`Activate 25% bonus for Resources and take the reward on task system`},
+    {"index":5,"note":`Put points in strength according to the amount of oasis you can raid.
 0 oasis: max 2 points 
 1-5 oasis: 8/12 points
 6+ oasis: 12(+) points
-Use the rewards to level up your hero to full health after smashing animals. Put the rest in resc production. 
-The chances of using your hero for 24h are very small and putting some extra points in resc production helps generating more resc when your hero can't clear any oasis anymore.`},
-    {"index": 4, "note": "Raid Oasis until you need to walk 1h+, of which you are sure you will clear the animals, after that considor to do adventure 2 (resc bounty). Adventure gives about 2300 resc."},
-    {"index": 5, "note": "Continue to raid oasis until 2h+ walkig time, then you should consider to put almost all points in resc production with the book of wisdom for hero. Book is obtained in adventure 6, usually comes within 24h after starting."},
-    {"index": 6, "note": `For farming it will be difficult to determine how many units to make. In the sheet we added some general calculations which can help to determine if you can make it profitable. 
-Recommended numbers are: 
-- 7 to 12 for Cavalry 
-- 30 to 60 for Infantery. 
-Timing of making units is also important, oasis only produce after all animals are killed. So to start with farming units right away is not recommended. Most efficient amount of farm units is situational. Base this number on touch and feel results on nearby oasis.`},
-    {"index": 7, "note": "Important reminder: TT & EI can be sent solo to an empty oasis!"},
-    {"index": 8, "note": "Goal: reach here in 12/16h"},
-    {"index": 9, "note": "Goal: party 1 in max 48h"},
-    {"index": 10, "note": `Check here which fields you want to upgrade based on ROI or invest more in farm units, bare in mind you already farm and get more resc income. Might be better to focus more on CP production, since that needs to go up anyway to make it in 4 parties. Nonetheless ROI for the fields 5 are:
-Wood - 67,4h
-Clay - 67,7h
-Iron - 82,5h
-Crop - 76,7h
-ROI is calculated with the reward cashed with hero level 6. Iron mines are not recommended to do in any situation, but is a possibility. `},
+Use the rewards to level up your hero to full health after smashing animals. 
+Put the rest in resc production. 
+The chances of using your hero for 24h(+) are very small and putting some extra points in resc production helps generating more income, 
+when your hero can't clear any oasis anymore.`},
+    {"index":20,"note":`Raid Oasis until you need to walk 1h+ then consider to do adventure 2 (resc). 
+        Adventure gives about 2300 resc.`},
+    {"index":27,"note":`Continue to raid oasis until 2h+ walkig time, then you should consider to put almost all points in resc production with the book of wisdom for hero. 
+        Book is obtained in adventure 6, usually comes within 24h after starting.`},
+    {"index":44,"note":`Goal: get here in 2h max`},
+    {"index":49,"note":`Goal: get here in 12h max`},
+    {"index":49,"note":`If have a sick spawn and expect to farm 100k+ on day 1, 
+        skip Wood/Clay/Iron fields 5 to after party 1. 
+        This can result in settling within 92 hours as you celebrate party one within 20h. 
+        Be aware that the expenses after party 1 are then higher where you'll need a solution for.`},
+    {"index":66,"note":`Goal: get here in 48h max`},
+    {"index":68,"note":`So here comes the tricky part! Pay attention!
+I've designed the build-up to have one decisive moment and that's here. 
+If you have farmed well and you have done party 1 faster than 48h 
+you've too less CP generated out of the regular production/ hour. 
+This needs to be compensated and this is done by upgrading crannies to 7. 
+It is critical to calculate how much CP you need and therewith know how much you lack. 
+Determine how much CP you need to compensate and use the crannies to fix it. 
+Remember you have at least 3 parties and about 60h of production to compensate the missed CP. 
+Be aware; 1 is neccessary for getting 250 pop.`},
+    {"index":76,"note":`For accurate settler costs select tribe above!`},
 ]

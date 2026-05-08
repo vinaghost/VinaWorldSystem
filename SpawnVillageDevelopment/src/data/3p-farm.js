@@ -26,7 +26,7 @@ export const threePartyFarmData = [
     {"To do":"Complete economy","Tier":1,"task":"all res to 2","cost":0,"reward res":2400,"reward exp":40,"cp prod":0,"pop":0},
     {"To do":"Population","Tier":1,"task":"50","cost":0,"reward res":1500,"reward exp":25,"cp prod":0,"pop":0},
     {"To do":"Warehouse","Tier":2,"task":"to 3","cost":1220,"reward res":600,"reward exp":10,"cp prod":1,"pop":2},
-    {"To do":"Barracs","Tier":1,"task":"to 1","cost":730,"reward res":600,"reward exp":10,"cp prod":1,"pop":4},
+    {"To do":"Barracks","Tier":1,"task":"to 1","cost":730,"reward res":600,"reward exp":10,"cp prod":1,"pop":4},
     {"To do":"Woodcutters","Tier":2,"task":"1x to 4","cost":1860,"reward res":1200,"reward exp":20,"cp prod":1,"pop":2},
     {"To do":"Croplands","Tier":2,"task":"1x to 4","cost":1860,"reward res":1200,"reward exp":20,"cp prod":1,"pop":0},
     {"To do":"Clay pits","Tier":2,"task":"1x to 4","cost":1870,"reward res":1200,"reward exp":20,"cp prod":1,"pop":2},
@@ -35,7 +35,7 @@ export const threePartyFarmData = [
     {"To do":"Cranny","Tier":3,"task":"to 6","cost":1065,"reward res":900,"reward exp":15,"cp prod":1,"pop":1},
     {"To do":"Main Building","Tier":3,"task":"to 7","cost":2395,"reward res":1800,"reward exp":30,"cp prod":4,"pop":6},
     {"To do":"Culture point production","Tier":1,"task":"50","cost":0,"reward res":1500,"reward exp":25,"cp prod":0,"pop":0},
-    {"To do":"Barracs","Tier":2,"task":"to 3","cost":2135,"reward res":600,"reward exp":10,"cp prod":1,"pop":4},
+    {"To do":"Barracks","Tier":2,"task":"to 3","cost":2135,"reward res":600,"reward exp":10,"cp prod":1,"pop":4},
     {"To do":"Academy","Tier":1,"task":"to 1","cost":510,"reward res":600,"reward exp":10,"cp prod":5,"pop":4},
     {"To do":"One cropland","Tier":0,"task":"to 3","cost":695,"reward res":0,"reward exp":0,"cp prod":1,"pop":0},
     {"To do":"Smithy","Tier":1,"task":"to 1","cost":1090,"reward res":600,"reward exp":10,"cp prod":2,"pop":4},
@@ -77,20 +77,43 @@ export const threePartyFarmData = [
     {"To do":"Warehouse","Tier":0,"task":"to 8","cost":2360,"reward res":0,"reward exp":0,"cp prod":0,"pop":1},
     {"To do":"Party 1","Tier":0,"task":"","cost":20330,"reward res":2400,"reward exp":40,"cp prod":0,"pop":0},
     {"To do":"Residence","Tier":0,"task":"to 10","cost":34635,"reward res":4800,"reward exp":80,"cp prod":5,"pop":3},
-    {"To do":"Party 3","Tier":0,"task":"","cost":20330,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
+    {"To do":"Party 2","Tier":0,"task":"","cost":20330,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
     {"To do":"Train settler(s)","Tier":0,"task":"3","cost":54300,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
-    {"To do":"Party 4","Tier":0,"task":"","cost":20330,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
+    {"To do":"Party 3","Tier":0,"task":"","cost":20330,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
     {"To do":"Don't forget about the 3k resc for launching!","Tier":0,"task":"","cost":3000,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
 ];
 
-export const threePartyFarmNote = [
-    {"index": 0, "note": "Send hero on the shortest adventure to get a horse. Then smash animals!"},
-    {"index": 1, "note": "Activate 25% resc production bonus."},
-    {"index": 3, "note": `Put points in strength according to the amount of oasis you can raid.
+export const threePartyFarmNote = [    
+    {"index":0,"note":`Send Hero only on first adventure
+                        Remember watch ads for Reduce adventure duration by 25% and Increased adventure danger to hard `},
+    {"index":0,"note":`Activate 25% bonus for Resources and take the reward on task system`},
+    {"index":5,"note":`Put points in strength according to the amount of oasis you can raid.
 0 oasis: max 2 points 
 1-5 oasis: 8/12 points
 6+ oasis: 12(+) points
 Use the rewards to level up your hero to full health after smashing animals. Put the rest in resc production. 
-The chances of using your hero for 24h are very small and putting some extra points in resc production helps generating more resc when your hero can't clear any oasis anymore.`},
-    {"index": 4, "note": "Raid Oasis until you need to walk 1h+, of which you are sure you will clear the animals, after that considor to do adventure 2 (resc bounty). Adventure gives about 2300 resc."},
+The chances of using your hero for 24h(+) are very small and putting some extra points in resc production helps generating more income, 
+when your hero can't clear any oasis anymore.`},
+    {"index":20,"note":`Raid Oasis until you need to walk 1h+ then consider to do adventure 2 (resc). Adventure gives about 2300 resc.`},
+    {"index":27,"note":`Continue to raid oasis until 2h+ walkig time, then you should consider to put almost all points in resc production with the book of wisdom for hero. 
+        Book is obtained in adventure 6, usually comes within 24h after starting.`},
+    {"index":49,"note":`For farming it will be difficult to determine how many units to make. 
+We added some general calculations which can help to determine if you can make it profitable. 
+Recommended amounts are:
+- 7 to 12 for Cavalry.
+- 30 to 60 for Infantery. 
+Timing of making units is also important, oasis only produce resc after all animals are killed. So to start with farming units right away is not recommended.
+Most efficient amount of farm units is situational. Base this number on touch and feel results on nearby oasis. It is not recommended to go for Equites Imperatoris, the cost are high and making it more profitble then Legionnaire is though.`},
+    {"index":50,"note":`Important reminder: TT & EI can be sent solo to an empty oasis!.`},
+    {"index":56,"note":`The ROI (Return of investment) for Iron mines is not that great. 
+        With a hero of level 6, 7 or 8 it's around 81hours (with the reward taken into account). 
+        Determine yourself if you want to invest in it. The production increase is about 75 per hour (with 25% bonus). 
+        Put this ROI next to your farming numbers and decide if you not rather want to invest in more farm units later on.`},
+    {"index":71,"note":`So here we are at a more critical phase were you'll need to think for yourself. 
+        Every start is different and therewith the amount of generated CP at this stage. 
+        If you went fast with a lot of farming, you have less generated CP out of the CP production. 
+        This will need to be compensated by higher CP from parties. Please calculate your situation and potentially add some CP production here. 
+        Please see below table for cheap CP per resc buildings.`},
+    {"index":75,"note":`Goal: get here in 72h max`},
+    {"index":78,"note":`For accurate settler costs select tribe above!`},
 ]

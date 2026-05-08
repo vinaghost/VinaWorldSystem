@@ -7,7 +7,7 @@ export const tab4pFarm = {
   notes: fourPartyFarmNote,
   farmConfig: {
     firstInsertIndex: 56,
-    secondInsertIndex: 66,
+    secondInsertIndex: 67,
     equitesStableIndex: 54,
     equitesWarehouseUpdateIndex: 64,
   },
