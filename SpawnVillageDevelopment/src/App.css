@@ -135,6 +135,21 @@ thead th {
   color: #1f2c44;
 }
 
+.quantity-label-cell {
+  background: #d98fb0;
+  color: #1f1a1f;
+  font-weight: 700;
+}
+
+.quantity-input {
+  width: 4.5rem;
+  border: 1px solid #1f1f1f;
+  border-radius: 0.2rem;
+  padding: 0.2rem 0.35rem;
+  font: inherit;
+  font-weight: 600;
+}
+
 .pwa-badge-wrap {
   justify-self: start;
 }

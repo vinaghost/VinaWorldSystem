@@ -11,6 +11,10 @@ const INITIALS = {
   population: 0,
 }
 
+const QUANTITY_ROW_INDEX = 68
+const QUANTITY_ROW_UNIT_COST = 1635
+const QUANTITY_FEATURE_TAB_ID = '4p-sim'
+
 function getNumber(value) {
   return Number(value) || 0
 }
@@ -35,6 +39,8 @@ function buildComputedRows(rows, options = {}) {
     stableOverrideIndex = -1,
     warehouseUpdateIndex = -1,
     selectedSettlerCost = 0,
+    quantityValue = 5,
+    enableQuantityFormula = false,
   } = options
   let balance = INITIALS.balance
   let previousRewardRes = 0
@@ -69,6 +75,13 @@ function buildComputedRows(rows, options = {}) {
       currentRow = {
         ...row,
         cost: getNumber(row.task) * selectedSettlerCost,
+      }
+    }
+
+    if (enableQuantityFormula && index === QUANTITY_ROW_INDEX) {
+      currentRow = {
+        ...currentRow,
+        cost: getNumber(quantityValue) * QUANTITY_ROW_UNIT_COST,
       }
     }
 
@@ -163,6 +176,7 @@ function buildComputedRows(rows, options = {}) {
 function App() {
   const [activeTab, setActiveTab] = useState(TABS[0].id)
   const [checkedByTab, setCheckedByTab] = useState({})
+  const [quantityByTab, setQuantityByTab] = useState({})
   const [selectedTribe, setSelectedTribe] = useState(settler_cost[0]?.unit ?? '')
   const [selectedUnit, setSelectedUnit] = useState(troop_cost[0]?.unit ?? '')
   const [farmUnitCount, setFarmUnitCount] = useState(10)
@@ -210,6 +224,7 @@ function App() {
   }, [activeTabConfig])
 
   const activeChecks = checkedByTab[activeTab] ?? {}
+  const activeQuantity = quantityByTab[activeTab] ?? 1
   const selectedSettler = useMemo(
     () => settler_cost.find((tribe) => tribe.unit === selectedTribe) ?? settler_cost[0],
     [selectedTribe],
@@ -236,6 +251,7 @@ function App() {
   const perHour48 = breakEven / 48
   const secondPerHour24 = secondBreakEven / 24
   const secondPerHour48 = secondBreakEven / 48
+  const enableQuantityFeature = activeTab === QUANTITY_FEATURE_TAB_ID
   const showFarmCalc = Boolean(activeFarmConfig)
   const applyEquitesOverrides = showFarmCalc && selectedTroop?.unit === 'Equites Imperatoris'
   const computedRows = useMemo(
@@ -251,6 +267,8 @@ function App() {
         stableOverrideIndex: activeFarmConfig?.equitesStableIndex ?? -1,
         warehouseUpdateIndex: activeFarmConfig?.equitesWarehouseUpdateIndex ?? -1,
         selectedSettlerCost,
+        quantityValue: activeQuantity,
+        enableQuantityFormula: enableQuantityFeature,
       }),
     [
       activeTabConfig,
@@ -261,6 +279,8 @@ function App() {
       showFarmCalc,
       applyEquitesOverrides,
       selectedSettlerCost,
+      activeQuantity,
+      enableQuantityFeature,
     ],
   )
 
@@ -443,6 +463,8 @@ function App() {
               const rowNotes = notesByIndex[row.index] ?? []
               const rowNumberLabel = row.displayNo ?? row.index + 1
               const rowKeyBase = row.index ?? rowCheckKey
+              const isQuantityRow =
+                enableQuantityFeature && row.kind === 'task' && row.index === QUANTITY_ROW_INDEX
 
               return (
                 <Fragment key={`${activeTab}-${rowKeyBase}-group`}>
@@ -464,8 +486,32 @@ function App() {
                     <td>{row['To do']}</td>
                     <td>{row.task}</td>
                     <td>{formatNumber(row.cost)}</td>
-                    <td>{formatNumber(row['reward res'])}</td>
-                    <td>{formatNumber(row['reward exp'])}</td>
+                    {isQuantityRow ? (
+                      <>
+                        <td className="quantity-label-cell">Quantity:</td>
+                        <td>
+                          <input
+                            type="number"
+                            min="0"
+                            value={activeQuantity}
+                            onChange={(event) => {
+                              const nextValue = getNumber(event.target.value)
+                              setQuantityByTab((previous) => ({
+                                ...previous,
+                                [activeTab]: nextValue,
+                              }))
+                            }}
+                            className="quantity-input"
+                            aria-label="Crannies quantity"
+                          />
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td>{formatNumber(row['reward res'])}</td>
+                        <td>{formatNumber(row['reward exp'])}</td>
+                      </>
+                    )}
                     <td>{row['cp prod']}</td>
                     <td>{row.pop}</td>
                     <td>{formatNumber(row.balance)}</td>
