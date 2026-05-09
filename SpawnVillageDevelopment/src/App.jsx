@@ -516,6 +516,16 @@ function App() {
     })
   }
 
+  function handleResetSettings() {
+    window.localStorage.removeItem(APP_SETTINGS_STORAGE_KEY)
+
+    TABS.forEach((tab) => {
+      window.localStorage.removeItem(`spawn-checklist:${tab.id}`)
+    })
+
+    window.location.reload()
+  }
+
   useEffect(() => {
     if (activeTabConfig && activeTabConfig.label) {
       document.title = `${activeTabConfig.label} | Spawn Village Development Checklist`;
@@ -528,19 +538,24 @@ function App() {
     <main className="app-shell">
       <header className="app-header">
         <h1>Spawn Village Development Checklist</h1>
-        <div className="tribe-select-wrap">
-          <label htmlFor="tribe-select">Tribe:</label>
-          <select
-            id="tribe-select"
-            value={selectedTribe}
-            onChange={(event) => setSelectedTribe(event.target.value)}
-          >
-            {settler_cost.map((tribe) => (
-              <option key={tribe.unit} value={tribe.unit}>
-                {tribe.unit}
-              </option>
-            ))}
-          </select>
+        <div className="header-controls">
+          <button type="button" className="reset-btn" onClick={handleResetSettings}>
+            Reset All Settings
+          </button>
+          <div className="tribe-select-wrap">
+            <label htmlFor="tribe-select">Tribe:</label>
+            <select
+              id="tribe-select"
+              value={selectedTribe}
+              onChange={(event) => setSelectedTribe(event.target.value)}
+            >
+              {settler_cost.map((tribe) => (
+                <option key={tribe.unit} value={tribe.unit}>
+                  {tribe.unit}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </header>
 

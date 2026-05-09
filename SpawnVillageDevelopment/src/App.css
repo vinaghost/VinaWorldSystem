@@ -18,8 +18,20 @@
   color: #5c5f69;
 }
 
-.tribe-select-wrap {
+.header-controls {
   margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.reset-btn {
+  order: 2;
+  margin-left: auto;
+}
+
+.tribe-select-wrap {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -30,6 +42,21 @@
   border-radius: 0.4rem;
   padding: 0.25rem 0.45rem;
   font: inherit;
+}
+
+.reset-btn {
+  border: 1px solid #9f3232;
+  background: #c13d3d;
+  color: #fff;
+  border-radius: 0.45rem;
+  padding: 0.35rem 0.7rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  background: #a33232;
 }
 
 .tabs {
