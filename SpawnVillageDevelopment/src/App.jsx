@@ -528,16 +528,18 @@ function App() {
 
   useEffect(() => {
     if (activeTabConfig && activeTabConfig.label) {
-      document.title = `${activeTabConfig.label} | Spawn Village Development Checklist`;
+      document.title = `${activeTabConfig.label} | Spawn Village Development Guide`;
     } else {
-      document.title = 'Spawn Village Development Checklist';
+      document.title = 'Spawn Village Development Guide';
     }
   }, [activeTabConfig]);
 
   return (
     <main className="app-shell">
       <header className="app-header">
-        <h1>Spawn Village Development Checklist</h1>
+        <h1>Spawn Village Development Guide</h1>
+        <h3>Credit to Caim's guide <a href="https://docs.google.com/spreadsheets/d/1A2ku0fdzpJDOefjG8ryUyyxYbXD2_z76IxMUhSERjtE/edit?usp=sharing" target="_blank" rel="noopener noreferrer">here</a></h3>
+        <p>We have auto-save feature, you can close the browser and come back later without losing your progress.</p>
         <div className="header-controls">
           <button type="button" className="reset-btn" onClick={handleResetSettings}>
             Reset All Settings
