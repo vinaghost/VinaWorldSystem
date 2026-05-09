@@ -1,3 +1,4 @@
+
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { additionCpBuildingNote } from './data/addition-cp-building-note'
 import { settler_cost, stable_change, troop_cost, warehouse_change } from './data/troop'
@@ -534,6 +535,14 @@ function App() {
     }
   }, [activeTabConfig]);
 
+    // Reset selectedUnit when tribe changes to avoid mismatch
+  useEffect(() => {
+    const troopsOfTribe = troop_cost.filter((troop) => troop.tribe === selectedTribe)
+    if (!troopsOfTribe.some((troop) => troop.unit === selectedUnit)) {
+      setSelectedUnit(troopsOfTribe[0]?.unit ?? '')
+    }
+  }, [selectedTribe, selectedUnit])
+
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -646,11 +655,13 @@ function App() {
                         className="farm-calc-input farm-calc-unit-input"
                         aria-label="Select troop unit"
                       >
-                        {troop_cost.map((troop) => (
-                          <option key={troop.unit} value={troop.unit}>
-                            {troop.unit}
-                          </option>
-                        ))}
+                        {troop_cost
+                          .filter((troop) => troop.tribe === selectedTribe)
+                          .map((troop) => (
+                            <option key={troop.unit} value={troop.unit}>
+                              {troop.unit}
+                            </option>
+                          ))}
                       </select>
                     </td>
                     <td className="farm-calc-value">{formatNumber(researchCost)}</td>
@@ -854,7 +865,30 @@ function App() {
       <div className="pwa-badge-wrap">
         <PWABadge />
       </div>
-    </main>
+
+    {/* Ko-fi donation section */}
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: '2rem',
+      marginBottom: '1rem',
+      fontSize: '1.1rem',
+      color: '#444',
+    }}>
+      <span style={{ marginBottom: '0.5rem' }}>
+        If you like my work, consider supporting me:
+      </span>
+      <a href="https://ko-fi.com/T6T3648VG" target="_blank" rel="noopener noreferrer">
+        <img
+          height="36"
+          style={{ border: 0, height: 36 }}
+          src="https://storage.ko-fi.com/cdn/kofi6.png?v=6"
+          alt="Buy Me a Coffee at ko-fi.com"
+        />
+      </a>
+    </div>
+  </main>
   )
 }
 

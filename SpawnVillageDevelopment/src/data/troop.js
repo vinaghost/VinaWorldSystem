@@ -1,9 +1,9 @@
 export const troop_cost = [
-    {'unit': "Equites Imperatoris", 'research': 8780, 'train': 1410, 'capacity': 100},
-    {'unit': "Legionnaire", 'research': 0, 'train': 400, 'capacity': 50},
-    {'unit': "Theutates Thunders", 'research': 6660, 'train': 1090, 'capacity': 75},
-    {'unit': "Phalanx", 'research': 0, 'train': 315, 'capacity': 35},
-    {'unit': "Clubswinger", 'research': 0, 'train': 250, 'capacity': 60 },
+    {'unit': "Equites Imperatoris", 'tribe': 'Roman', 'research': 8780, 'train': 1410, 'capacity': 100},
+    {'unit': "Legionnaire", 'tribe': 'Roman', 'research': 0, 'train': 400, 'capacity': 50},
+    {'unit': "Theutates Thunders", 'tribe': 'Gaul', 'research': 6660, 'train': 1090, 'capacity': 75},
+    {'unit': "Phalanx", 'tribe': 'Gaul', 'research': 0, 'train': 315, 'capacity': 35},
+    {'unit': "Clubswinger", 'tribe': 'Teuton', 'research': 0, 'train': 250, 'capacity': 60 },
 ];
 
 export const  settler_cost = [
