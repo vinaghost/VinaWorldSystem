@@ -150,6 +150,46 @@ thead th {
   font-weight: 600;
 }
 
+.cp-control-row td {
+  background: #f5f7fc;
+}
+
+.cp-btn {
+  border: 1px solid #325da8;
+  background: #3f73ce;
+  color: #fff;
+  border-radius: 0.4rem;
+  padding: 0.28rem 0.6rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cp-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cp-btn.remove {
+  border-color: #8f3e3e;
+  background: #b74848;
+}
+
+.cp-additional-section {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.cp-additional-section h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.cp-additional-section p {
+  margin: 0;
+  color: #454b58;
+}
+
 .pwa-badge-wrap {
   justify-self: start;
 }

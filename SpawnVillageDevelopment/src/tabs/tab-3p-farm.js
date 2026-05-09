@@ -1,4 +1,4 @@
-import { threePartyFarmData, threePartyFarmNote } from '../data/3p-farm'
+import { threePartyFarmAdditionData, threePartyFarmData, threePartyFarmNote } from '../data/3p-farm'
 
 export const tab3pFarm = {
   id: '3p-farm',
@@ -11,4 +11,9 @@ export const tab3pFarm = {
     equitesStableIndex: 49,
     equitesWarehouseUpdateIndex: 72,
   },
+  cpBuildingConfig: {
+    beforeInsertIndex: 75,
+    afterInsertIndex: 76,
+  },
+  additionRows: threePartyFarmAdditionData,
 }

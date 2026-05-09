@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
+import { additionCpBuildingNote } from './data/addition-cp-building-note'
 import { settler_cost, stable_change, troop_cost, warehouse_change } from './data/troop'
 import PWABadge from './PWABadge.jsx'
 import { TABS } from './tabs'
@@ -14,6 +15,52 @@ const INITIALS = {
 const QUANTITY_ROW_INDEX = 68
 const QUANTITY_ROW_UNIT_COST = 1635
 const QUANTITY_FEATURE_TAB_ID = '4p-sim'
+const APP_SETTINGS_STORAGE_KEY = 'spawn-checklist:settings:v1'
+
+function loadStoredSettings() {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  const legacyChecks = {}
+
+  TABS.forEach((tab) => {
+    try {
+      const saved = window.localStorage.getItem(`spawn-checklist:${tab.id}`)
+      if (!saved) {
+        legacyChecks[tab.id] = {}
+        return
+      }
+
+      const parsed = JSON.parse(saved)
+      legacyChecks[tab.id] = parsed && typeof parsed === 'object' ? parsed : {}
+    } catch {
+      legacyChecks[tab.id] = {}
+    }
+  })
+
+  try {
+    const raw = window.localStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+    if (!raw) {
+      return { checkedByTab: legacyChecks }
+    }
+
+    const parsed = JSON.parse(raw)
+    if (!parsed || typeof parsed !== 'object') {
+      return { checkedByTab: legacyChecks }
+    }
+
+    return {
+      ...parsed,
+      checkedByTab:
+        parsed.checkedByTab && typeof parsed.checkedByTab === 'object'
+          ? parsed.checkedByTab
+          : legacyChecks,
+    }
+  } catch {
+    return { checkedByTab: legacyChecks }
+  }
+}
 
 function getNumber(value) {
   return Number(value) || 0
@@ -41,6 +88,11 @@ function buildComputedRows(rows, options = {}) {
     selectedSettlerCost = 0,
     quantityValue = 5,
     enableQuantityFormula = false,
+    beforeCpInsertIndex = -1,
+    afterCpInsertIndex = -1,
+    enableCpBuildingInsertion = false,
+    beforeCpRows = [],
+    afterCpRows = [],
   } = options
   let balance = INITIALS.balance
   let previousRewardRes = 0
@@ -83,6 +135,22 @@ function buildComputedRows(rows, options = {}) {
         ...currentRow,
         cost: getNumber(quantityValue) * QUANTITY_ROW_UNIT_COST,
       }
+    }
+
+    if (enableCpBuildingInsertion && index === beforeCpInsertIndex) {
+      result.push({ kind: 'cp-control-before' })
+
+      beforeCpRows.forEach((cpRow, cpRowIndex) => {
+        result.push(
+          applyComputedValues({
+            kind: 'cp-additional-before',
+            checkKey: `cp-before-${cpRow.sourceIndex}`,
+            displayNo: '',
+            canRemove: cpRowIndex === beforeCpRows.length - 1,
+            ...cpRow,
+          }),
+        )
+      })
     }
 
     if (applyEquitesOverrides && index === stableOverrideIndex) {
@@ -168,40 +236,95 @@ function buildComputedRows(rows, options = {}) {
         ...currentRow,
       }),
     )
+
+    if (enableCpBuildingInsertion && index === afterCpInsertIndex) {
+      result.push({ kind: 'cp-control-after' })
+
+      afterCpRows.forEach((cpRow, cpRowIndex) => {
+        result.push(
+          applyComputedValues({
+            kind: 'cp-additional-after',
+            checkKey: `cp-after-${cpRow.sourceIndex}`,
+            displayNo: '',
+            canRemove: cpRowIndex === afterCpRows.length - 1,
+            ...cpRow,
+          }),
+        )
+      })
+    }
   })
 
   return result
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState(TABS[0].id)
-  const [checkedByTab, setCheckedByTab] = useState({})
-  const [quantityByTab, setQuantityByTab] = useState({})
-  const [selectedTribe, setSelectedTribe] = useState(settler_cost[0]?.unit ?? '')
-  const [selectedUnit, setSelectedUnit] = useState(troop_cost[0]?.unit ?? '')
-  const [farmUnitCount, setFarmUnitCount] = useState(10)
-  const [farmUnitCountSecond, setFarmUnitCountSecond] = useState(10)
+  const storedSettings = useMemo(() => loadStoredSettings(), [])
+  const [activeTab, setActiveTab] = useState(() => {
+    const savedTab = storedSettings?.activeTab
+    return TABS.some((tab) => tab.id === savedTab) ? savedTab : TABS[0].id
+  })
+  const [checkedByTab, setCheckedByTab] = useState(() => {
+    if (storedSettings?.checkedByTab && typeof storedSettings.checkedByTab === 'object') {
+      return storedSettings.checkedByTab
+    }
+    return {}
+  })
+  const [cpPlacementByTab, setCpPlacementByTab] = useState(() => {
+    return storedSettings?.cpPlacementByTab && typeof storedSettings.cpPlacementByTab === 'object'
+      ? storedSettings.cpPlacementByTab
+      : {}
+  })
+  const [quantityByTab, setQuantityByTab] = useState(() => {
+    return storedSettings?.quantityByTab && typeof storedSettings.quantityByTab === 'object'
+      ? storedSettings.quantityByTab
+      : {}
+  })
+  const [selectedTribe, setSelectedTribe] = useState(() => {
+    const savedTribe = storedSettings?.selectedTribe
+    return settler_cost.some((tribe) => tribe.unit === savedTribe)
+      ? savedTribe
+      : (settler_cost[0]?.unit ?? '')
+  })
+  const [selectedUnit, setSelectedUnit] = useState(() => {
+    const savedUnit = storedSettings?.selectedUnit
+    return troop_cost.some((troop) => troop.unit === savedUnit)
+      ? savedUnit
+      : (troop_cost[0]?.unit ?? '')
+  })
+  const [farmUnitCount, setFarmUnitCount] = useState(() => {
+    return typeof storedSettings?.farmUnitCount === 'number'
+      ? getNumber(storedSettings.farmUnitCount)
+      : 10
+  })
+  const [farmUnitCountSecond, setFarmUnitCountSecond] = useState(() => {
+    return typeof storedSettings?.farmUnitCountSecond === 'number'
+      ? getNumber(storedSettings.farmUnitCountSecond)
+      : 10
+  })
 
   useEffect(() => {
-    const loaded = {}
+    const nextSettings = {
+      activeTab,
+      checkedByTab,
+      cpPlacementByTab,
+      quantityByTab,
+      selectedTribe,
+      selectedUnit,
+      farmUnitCount,
+      farmUnitCountSecond,
+    }
 
-    TABS.forEach((tab) => {
-      try {
-        const saved = window.localStorage.getItem(`spawn-checklist:${tab.id}`)
-        if (!saved) {
-          loaded[tab.id] = {}
-          return
-        }
-
-        const parsed = JSON.parse(saved)
-        loaded[tab.id] = parsed && typeof parsed === 'object' ? parsed : {}
-      } catch {
-        loaded[tab.id] = {}
-      }
-    })
-
-    setCheckedByTab(loaded)
-  }, [])
+    window.localStorage.setItem(APP_SETTINGS_STORAGE_KEY, JSON.stringify(nextSettings))
+  }, [
+    activeTab,
+    checkedByTab,
+    cpPlacementByTab,
+    quantityByTab,
+    selectedTribe,
+    selectedUnit,
+    farmUnitCount,
+    farmUnitCountSecond,
+  ])
 
   const activeTabConfig = TABS.find((tab) => tab.id === activeTab) ?? TABS[0]
   const notesByIndex = useMemo(() => {
@@ -234,6 +357,18 @@ function App() {
     [selectedUnit],
   )
   const activeFarmConfig = activeTabConfig.farmConfig
+  const activeCpConfig = activeTabConfig.cpBuildingConfig
+  const activeAdditionalRows = activeTabConfig.additionRows ?? []
+  const activeCpPlacement = cpPlacementByTab[activeTab] ?? { beforeCount: 0, afterCount: 0 }
+  const beforeCount = activeCpPlacement.beforeCount ?? 0
+  const afterCount = activeCpPlacement.afterCount ?? 0
+  const beforeCpRows = activeAdditionalRows
+    .slice(0, beforeCount)
+    .map((row, index) => ({ ...row, sourceIndex: index }))
+  const afterCpRows = activeAdditionalRows
+    .slice(beforeCount, beforeCount + afterCount)
+    .map((row, index) => ({ ...row, sourceIndex: beforeCount + index }))
+  const remainingCpRows = activeAdditionalRows.slice(beforeCount + afterCount)
   const selectedSettlerCost = getNumber(selectedSettler?.cost)
 
   const researchCost = getNumber(selectedTroop?.research)
@@ -254,6 +389,9 @@ function App() {
   const enableQuantityFeature = activeTab === QUANTITY_FEATURE_TAB_ID
   const showFarmCalc = Boolean(activeFarmConfig)
   const applyEquitesOverrides = showFarmCalc && selectedTroop?.unit === 'Equites Imperatoris'
+  const enableCpBuildingInsertion = Boolean(activeCpConfig)
+  const beforeCpInsertIndex = activeCpConfig?.beforeInsertIndex ?? activeCpConfig?.insertIndex ?? -1
+  const afterCpInsertIndex = activeCpConfig?.afterInsertIndex ?? activeCpConfig?.insertIndex ?? -1
   const computedRows = useMemo(
     () =>
       buildComputedRows(activeTabConfig.rows, {
@@ -269,6 +407,11 @@ function App() {
         selectedSettlerCost,
         quantityValue: activeQuantity,
         enableQuantityFormula: enableQuantityFeature,
+        beforeCpInsertIndex,
+        afterCpInsertIndex,
+        enableCpBuildingInsertion,
+        beforeCpRows,
+        afterCpRows,
       }),
     [
       activeTabConfig,
@@ -281,8 +424,75 @@ function App() {
       selectedSettlerCost,
       activeQuantity,
       enableQuantityFeature,
+      beforeCpInsertIndex,
+      afterCpInsertIndex,
+      enableCpBuildingInsertion,
+      beforeCpRows,
+      afterCpRows,
     ],
   )
+
+  const addCpBuilding = (position) => {
+    setCpPlacementByTab((previous) => {
+      const current = previous[activeTab] ?? { beforeCount: 0, afterCount: 0 }
+      const usedCount = current.beforeCount + current.afterCount
+
+      if (usedCount >= activeAdditionalRows.length) {
+        return previous
+      }
+
+      const nextPlacement = position === 'before'
+        ? {
+            beforeCount: current.beforeCount + 1,
+            afterCount: current.afterCount,
+          }
+        : {
+            beforeCount: current.beforeCount,
+            afterCount: current.afterCount + 1,
+          }
+
+      return {
+        ...previous,
+        [activeTab]: nextPlacement,
+      }
+    })
+  }
+
+  const removeCpBuilding = (position) => {
+    setCpPlacementByTab((previous) => {
+      const current = previous[activeTab] ?? { beforeCount: 0, afterCount: 0 }
+
+      if (position === 'before') {
+        if (current.beforeCount <= 0) {
+          return previous
+        }
+
+        return {
+          ...previous,
+          [activeTab]: {
+            beforeCount: current.beforeCount - 1,
+            afterCount: current.afterCount,
+          },
+        }
+      }
+
+      if (position === 'after') {
+        if (current.afterCount <= 0) {
+          return previous
+        }
+
+        return {
+          ...previous,
+          [activeTab]: {
+            beforeCount: current.beforeCount,
+            afterCount: current.afterCount - 1,
+          },
+        }
+      }
+
+      return previous
+    })
+  }
 
   const toggleDone = (rowKey) => {
     setCheckedByTab((previous) => {
@@ -306,11 +516,18 @@ function App() {
     })
   }
 
+  useEffect(() => {
+    if (activeTabConfig && activeTabConfig.label) {
+      document.title = `${activeTabConfig.label} | Spawn Village Development Checklist`;
+    } else {
+      document.title = 'Spawn Village Development Checklist';
+    }
+  }, [activeTabConfig]);
+
   return (
     <main className="app-shell">
       <header className="app-header">
         <h1>Spawn Village Development Checklist</h1>
-        <p>Track your build order for 3-party and 4-party routes.</p>
         <div className="tribe-select-wrap">
           <label htmlFor="tribe-select">Tribe:</label>
           <select
@@ -361,6 +578,44 @@ function App() {
           </thead>
           <tbody>
             {computedRows.map((row) => {
+              if (row.kind === 'cp-control-before') {
+                return (
+                  <tr key={`${activeTab}-cp-control-before`} className="cp-control-row">
+                    <td></td>
+                    <td></td>
+                    <td colSpan={11}>
+                      <button
+                        type="button"
+                        className="cp-btn"
+                        onClick={() => addCpBuilding('before')}
+                        disabled={!remainingCpRows.length}
+                      >
+                        Add CP building
+                      </button>
+                    </td>
+                  </tr>
+                )
+              }
+
+              if (row.kind === 'cp-control-after') {
+                return (
+                  <tr key={`${activeTab}-cp-control-after`} className="cp-control-row">
+                    <td></td>
+                    <td></td>
+                    <td colSpan={11}>
+                      <button
+                        type="button"
+                        className="cp-btn"
+                        onClick={() => addCpBuilding('after')}
+                        disabled={!remainingCpRows.length}
+                      >
+                        Add CP building
+                      </button>
+                    </td>
+                  </tr>
+                )
+              }
+
               if (row.kind === 'calc-research') {
                 return (
                   <tr key={`${activeTab}-calc-research`} className="farm-calc-row">
@@ -459,6 +714,7 @@ function App() {
               }
 
               const rowCheckKey = row.checkKey ?? String(row.index)
+              const isAdditionalCpRow = row.kind === 'cp-additional-before' || row.kind === 'cp-additional-after'
               const isDone = Boolean(activeChecks[rowCheckKey])
               const rowNotes = notesByIndex[row.index] ?? []
               const rowNumberLabel = row.displayNo ?? row.index + 1
@@ -476,12 +732,23 @@ function App() {
                   <tr key={`${activeTab}-${rowKeyBase}`} className={isDone ? 'done-row' : ''}>
                     <td>{rowNumberLabel}</td>
                     <td>
-                      <input
-                        type="checkbox"
-                        checked={isDone}
-                        onChange={() => toggleDone(rowCheckKey)}
-                        aria-label={`Mark row ${rowNumberLabel || rowCheckKey} as done`}
-                      />
+                      {isAdditionalCpRow ? (
+                        <button
+                          type="button"
+                          className="cp-btn remove"
+                          disabled={!row.canRemove}
+                          onClick={() => removeCpBuilding(row.kind === 'cp-additional-before' ? 'before' : 'after')}
+                        >
+                          Remove
+                        </button>
+                      ) : (
+                        <input
+                          type="checkbox"
+                          checked={isDone}
+                          onChange={() => toggleDone(rowCheckKey)}
+                          aria-label={`Mark row ${rowNumberLabel || rowCheckKey} as done`}
+                        />
+                      )}
                     </td>
                     <td>{row['To do']}</td>
                     <td>{row.task}</td>
@@ -524,6 +791,47 @@ function App() {
             })}
           </tbody>
         </table>
+      </section>
+
+      <section className="cp-additional-section">
+        <h2>Additional CP buildings</h2>
+        {additionCpBuildingNote.map((note, index) => (
+          <p key={`cp-additional-note-${index}`}>{note}</p>
+        ))}
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>To do</th>
+                <th>Task</th>
+                <th>cost</th>
+                <th>reward res</th>
+                <th>reward exp</th>
+                <th>cp prod</th>
+                <th>pop</th>
+              </tr>
+            </thead>
+            <tbody>
+              {remainingCpRows.length ? (
+                remainingCpRows.map((row, index) => (
+                  <tr key={`remaining-cp-${index}`}>
+                    <td>{row['To do']}</td>
+                    <td>{row.task}</td>
+                    <td>{formatNumber(row.cost)}</td>
+                    <td>{formatNumber(row['reward res'])}</td>
+                    <td>{formatNumber(row['reward exp'])}</td>
+                    <td>{row['cp prod']}</td>
+                    <td>{row.pop}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7}>No remaining CP buildings.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <div className="pwa-badge-wrap">

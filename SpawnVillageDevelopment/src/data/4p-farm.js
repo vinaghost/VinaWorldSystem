@@ -84,7 +84,23 @@ export const fourPartyFarmData = [
     {"To do":"Party 4","Tier":0,"task":"","cost":20330,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
     {"To do":"Don't forget about the 3k resc for launching!","Tier":0,"task":"","cost":3000,"reward res":0,"reward exp":0,"cp prod":0,"pop":0},
 ];
-
+export const fourPartyFarmAdditionData = [
+    {"To do":"Embassy","Tier":0,"task":"to 9","cost":9295,"reward res":0,"reward exp":0,"cp prod":9,"pop":6},
+    {"To do":"Main building","Tier":0,"task":"to 14","cost":8380,"reward res":0,"reward exp":0,"cp prod":8,"pop":4},
+    {"To do":"Academy","Tier":0,"task":"to 11","cost":6020,"reward res":0,"reward exp":0,"cp prod":5,"pop":3},
+    {"To do":"Main building","Tier":0,"task":"to 15","cost":6025,"reward res":0,"reward exp":0,"cp prod":5,"pop":2},
+    {"To do":"Embassy","Tier":0,"task":"to 10","cost":4985,"reward res":0,"reward exp":0,"cp prod":4,"pop":2},
+    {"To do":"Marketplace","Tier":0,"task":"to 14","cost":14995,"reward res":0,"reward exp":0,"cp prod":12,"pop":6},
+    {"To do":"Rallypoint","Tier":0,"task":"to 3","cost":1250,"reward res":0,"reward exp":0,"cp prod":1,"pop":2},
+    {"To do":"Embassy","Tier":0,"task":"to 11","cost":6375,"reward res":0,"reward exp":0,"cp prod":5,"pop":3},
+    {"To do":"Academy","Tier":0,"task":"to 12","cost":7710,"reward res":0,"reward exp":0,"cp prod":6,"pop":3},
+    {"To do":"Main building","Tier":0,"task":"to 16","cost":7710,"reward res":0,"reward exp":0,"cp prod":6,"pop":3},
+    {"To do":"Culture point production","Tier":4,"task":"250","cost":0,"reward res":6000,"reward exp":100,"cp prod":0,"pop":0},
+    {"To do":"Embassy","Tier":0,"task":"to 12","cost":8160,"reward res":0,"reward exp":0,"cp prod":6,"pop":3},
+    {"To do":"Main Building","Tier":0,"task":"to 18","cost":22495,"reward res":0,"reward exp":0,"cp prod":16,"pop":6},
+    {"To do":"Academy","Tier":0,"task":"to 13","cost":9865,"reward res":0,"reward exp":0,"cp prod":6,"pop":3},
+    {"To do":"Cranny sims","Tier":0,"task":"All to 10","cost":28600,"reward res":0,"reward exp":0,"cp prod":20,"pop":30},
+]
 export const fourPartyFarmNote = [
    {"index":0,"note":`Send Hero only on first adventure
                         Remember watch ads for Reduce adventure duration by 25% and Increased adventure danger to hard `},
